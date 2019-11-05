@@ -450,7 +450,18 @@ MonoBehaviour:
       Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   OnTouchpadPressed:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 227394921}
+        m_MethodName: CreatePropsAtRightHand
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
     m_TypeName: VRTK.UnityEventHelper.VRTK_ControllerEvents_UnityEvents+ControllerInteractionEvent,
       Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   OnTouchpadReleased:
@@ -461,7 +472,7 @@ MonoBehaviour:
   OnTouchpadTouchStart:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 227394921}
+      - m_Target: {fileID: 0}
         m_MethodName: CreateBallAtRightHand
         m_Mode: 1
         m_Arguments:
@@ -471,7 +482,7 @@ MonoBehaviour:
           m_FloatArgument: 0
           m_StringArgument: 
           m_BoolArgument: 0
-        m_CallState: 2
+        m_CallState: 0
     m_TypeName: VRTK.UnityEventHelper.VRTK_ControllerEvents_UnityEvents+ControllerInteractionEvent,
       Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null
   OnTouchpadTouchEnd:
@@ -852,17 +863,16 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 227394920}
-  m_Enabled: 0
+  m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f0e54db32ea20d34b896b4db818321b8, type: 3}
+  m_Script: {fileID: 11500000, guid: 3d762e1aafafdc647b4d6ccdcec42957, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   rightHand: {fileID: 109582311}
   leftHand: {fileID: 1408711848}
-  ballPrefab: {fileID: 5205844565909569940, guid: 92779d2ec4b02c0449fbf355d6681905,
+  propsPrefab: {fileID: 2136736643242371250, guid: b8bf1978b4d46a245b9cc58d522e2cc4,
     type: 3}
-  ballOffset: {x: 0, y: 0.2, z: 0}
-  ballSpeed: 0
+  propsOffset: {x: 0, y: 0.3, z: 0}
 --- !u!4 &227394922
 Transform:
   m_ObjectHideFlags: 0
@@ -4886,7 +4896,7 @@ MonoBehaviour:
   OnTouchpadTouchStart:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 227394921}
+      - m_Target: {fileID: 0}
         m_MethodName: CreateBallAtLeftHand
         m_Mode: 1
         m_Arguments:
