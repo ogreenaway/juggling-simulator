@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class BallBehaviour : MonoBehaviour
 {
+    public GameObject clock;
     // Start is called before the first frame update
     void Start()
     {
@@ -21,6 +22,11 @@ public class BallBehaviour : MonoBehaviour
         if (collision.gameObject.tag == "Prop")
         {
             Physics.IgnoreCollision(collision.collider, GetComponent<Collider>());
+        }
+
+        if (collision.gameObject.tag == "Floor")
+        {
+            clock.GetComponent<Clock>().Stop();
         }
     }
 }

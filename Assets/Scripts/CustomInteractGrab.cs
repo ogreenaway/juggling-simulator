@@ -9,7 +9,7 @@ public class CustomInteractGrab : VRTK.VRTK_InteractGrab
     public override void OnControllerGrabInteractableObject(ObjectInteractEventArgs e)
     {
         // Debug.Log("Grabed:" + e.controllerReference.index + " and " + e.target.GetInstanceID());
-        siteSwap.GetComponent<SiteSwaps>().RecordGrab(e.controllerReference.index, e.target.GetInstanceID());
+        // siteSwap.GetComponent<SiteSwaps>().RecordGrab(e.controllerReference.index, e.target.GetInstanceID());
         base.OnControllerGrabInteractableObject(e);
     }
 }
