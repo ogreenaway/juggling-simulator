@@ -141,31 +141,13 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5122855}
-  - component: {fileID: 5122854}
   m_Layer: 0
-  m_Name: Clock
+  m_Name: Clock Visuals
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!114 &5122854
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5122853}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 729a0914a7c82564f95bf70e68fe0211, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  currentRecord: 0
-  currentTime: 0
-  shouldTime: 0
-  currentTimeText: {fileID: 1476208161}
-  currentRecordText: {fileID: 2763300}
 --- !u!4 &5122855
 Transform:
   m_ObjectHideFlags: 0
@@ -253,7 +235,7 @@ PrefabInstance:
         type: 3}
       propertyPath: clock
       value: 
-      objectReference: {fileID: 5122853}
+      objectReference: {fileID: 956799481}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 92779d2ec4b02c0449fbf355d6681905, type: 3}
 --- !u!54 &47278100 stripped
@@ -604,8 +586,8 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
-      - m_Target: {fileID: 5122854}
-        m_MethodName: Start
+      - m_Target: {fileID: 956799485}
+        m_MethodName: StartTimer
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -843,7 +825,7 @@ PrefabInstance:
         type: 3}
       propertyPath: clock
       value: 
-      objectReference: {fileID: 5122853}
+      objectReference: {fileID: 956799481}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 92779d2ec4b02c0449fbf355d6681905, type: 3}
 --- !u!1 &171595527
@@ -3297,7 +3279,7 @@ PrefabInstance:
         type: 3}
       propertyPath: clock
       value: 
-      objectReference: {fileID: 5122853}
+      objectReference: {fileID: 956799481}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 92779d2ec4b02c0449fbf355d6681905, type: 3}
 --- !u!1 &946590896
@@ -3400,7 +3382,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 956799483}
+  - component: {fileID: 956799484}
   - component: {fileID: 956799482}
+  - component: {fileID: 956799485}
   m_Layer: 0
   m_Name: Game Logic
   m_TagString: Untagged
@@ -3431,7 +3415,6 @@ MonoBehaviour:
   - {fileID: 1644444872}
   ballVerticalOffset: 0.4
   ballHorizontalOffset: -0.5
-  numberOfBalls: 3
 --- !u!4 &956799483
 Transform:
   m_ObjectHideFlags: 0
@@ -3446,6 +3429,34 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &956799484
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 956799481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5f2d8389673effa4089dbc0f988b75ae, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &956799485
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 956799481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 729a0914a7c82564f95bf70e68fe0211, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  currentTime: 0
+  shouldTime: 0
+  currentTimeTextGameObject: {fileID: 1476208161}
+  currentRecordTextGameObject: {fileID: 2763300}
 --- !u!54 &965104721 stripped
 Rigidbody:
   m_CorrespondingSourceObject: {fileID: 5205844565909569940, guid: 92779d2ec4b02c0449fbf355d6681905,
@@ -5159,7 +5170,7 @@ PrefabInstance:
         type: 3}
       propertyPath: clock
       value: 
-      objectReference: {fileID: 5122853}
+      objectReference: {fileID: 956799481}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 92779d2ec4b02c0449fbf355d6681905, type: 3}
 --- !u!1 &1304472945
@@ -6422,7 +6433,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 441652, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0
+      value: 0.32
       objectReference: {fileID: 0}
     - target: {fileID: 441652, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
       propertyPath: m_LocalPosition.y
@@ -6479,6 +6490,10 @@ PrefabInstance:
     - target: {fileID: 22412712, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
+      propertyPath: fontSize
+      value: 60
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
@@ -6652,8 +6667,8 @@ MonoBehaviour:
   equalityFidelity: 0.001
   maximumLength: 0.285
   minMaxThreshold: 0.01
-  positionTarget: 0.5
-  restingPosition: 0.5
+  positionTarget: 0.2857143
+  restingPosition: 0.2857143
   forceRestingPositionThreshold: 0
   stepValueRange:
     minimum: 1
@@ -6859,6 +6874,10 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
+      propertyPath: fontSize
+      value: 60
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
 --- !u!1 &1609818654
@@ -7013,7 +7032,7 @@ PrefabInstance:
         type: 3}
       propertyPath: clock
       value: 
-      objectReference: {fileID: 5122853}
+      objectReference: {fileID: 956799481}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 92779d2ec4b02c0449fbf355d6681905, type: 3}
 --- !u!1 &1621375036
@@ -7649,7 +7668,7 @@ PrefabInstance:
         type: 3}
       propertyPath: clock
       value: 
-      objectReference: {fileID: 5122853}
+      objectReference: {fileID: 956799481}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 92779d2ec4b02c0449fbf355d6681905, type: 3}
 --- !u!1 &1847602269
@@ -8029,7 +8048,7 @@ PrefabInstance:
         type: 3}
       propertyPath: clock
       value: 
-      objectReference: {fileID: 5122853}
+      objectReference: {fileID: 956799481}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 92779d2ec4b02c0449fbf355d6681905, type: 3}
 --- !u!1 &1954381364

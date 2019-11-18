@@ -26,7 +26,7 @@ public class BallBehaviour : MonoBehaviour
 
         if (collision.gameObject.tag == "Floor")
         {
-            clock.GetComponent<Clock>().Stop();
+            clock.GetComponent<Clock>().StopTimer();
         }
     }
 }

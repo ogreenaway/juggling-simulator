@@ -8,12 +8,12 @@ public class MoveProps : MonoBehaviour
     public Rigidbody[] balls;
     public float ballVerticalOffset = 0.4F;
     public float ballHorizontalOffset = -0.5F;
-    public int numberOfBalls = 3;
+    private Customisation customisation;
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        customisation = this.gameObject.GetComponent<Customisation>();
     }
 
     // Update is called once per frame
@@ -22,16 +22,12 @@ public class MoveProps : MonoBehaviour
         
     }
 
-    public void SetNumberOfBalls(int newNumberOfBalls)
-    {
-        numberOfBalls = newNumberOfBalls;
-    }
-
     public void Move()
     {
         var rightHandPosition = rightHand.transform.position;
+        var numberOfBalls = customisation.GetNumberOfBalls();
 
-        for(var i = 0; i < numberOfBalls; i++)
+        for (var i = 0; i < numberOfBalls; i++)
         {
             var horizontalOffset = i % 2 != 0 ? ballHorizontalOffset : 0;
             balls[i].transform.position = rightHandPosition + new Vector3(horizontalOffset, (i + 1) * ballVerticalOffset, 0);

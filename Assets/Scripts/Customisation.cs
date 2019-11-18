@@ -1,0 +1,32 @@
+﻿using System.Collections;
+using System.Collections.Generic;
+using UnityEngine;
+
+public class Customisation : MonoBehaviour
+{
+    private int numberOfBalls = 3;
+    private Clock clock;
+    // Start is called before the first frame update
+    void Start()
+    {
+        clock = this.gameObject.GetComponent<Clock>();
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        
+    }
+
+    public void SetNumberOfBalls(int newNumberOfBalls)
+    {
+        clock.StopTimer();
+        numberOfBalls = newNumberOfBalls;
+        clock.UpdateScoreBoard();
+    }
+
+    public int GetNumberOfBalls()
+    {
+        return numberOfBalls;
+    }
+}

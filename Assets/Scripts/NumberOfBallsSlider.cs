@@ -14,19 +14,23 @@ public class NumberOfBallsSlider : MonoBehaviour
     {
         controllable = (controllable == null ? GetComponent<VRTK_BaseControllable>() : controllable);
         controllable.ValueChanged += ValueChanged;
+        /*
         controllable.MaxLimitReached += MaxLimitReached;
         controllable.MinLimitReached += MinLimitReached;
+        */
     }
 
     protected virtual void ValueChanged(object sender, ControllableEventArgs e)
     {
-        gameLogic.GetComponent<MoveProps>().SetNumberOfBalls((int)e.value);
+        gameLogic.GetComponent<Customisation>().SetNumberOfBalls((int)e.value);
+
         if (displayText != null)
         {
             displayText.text = e.value.ToString("F1");
         }
     }
 
+    /*
     protected virtual void MaxLimitReached(object sender, ControllableEventArgs e)
     {
         if (outputOnMax != "")
@@ -42,4 +46,5 @@ public class NumberOfBallsSlider : MonoBehaviour
             Debug.Log(outputOnMin);
         }
     }
+    */
 }
