@@ -6,6 +6,7 @@ public class Customisation : MonoBehaviour
 {
     private int numberOfBalls = 3;
     private Clock clock;
+
     // Start is called before the first frame update
     void Start()
     {
@@ -28,5 +29,10 @@ public class Customisation : MonoBehaviour
     public int GetNumberOfBalls()
     {
         return numberOfBalls;
+    }
+
+    public void SetGravity(float newGravity)
+    {
+        Physics.gravity = new Vector3(0, -1 * newGravity, 0);
     }
 }
