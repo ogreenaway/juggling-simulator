@@ -2,13 +2,11 @@
 using UnityEngine.UI;
 using VRTK.Controllables;
 
-public class BallSizeSlider : MonoBehaviour
+public class ColliderRadiusSlider : MonoBehaviour
 {
     public VRTK_BaseControllable controllable;
     public Text displayText;
-    public GameObject exampleBall;
     public GameObject exampleColliderBall;
-
 
     protected virtual void OnEnable()
     {
@@ -18,30 +16,25 @@ public class BallSizeSlider : MonoBehaviour
 
     protected virtual void ValueChanged(object sender, ControllableEventArgs e)
     {
-        SetBallSize(e.value);
-        SetExampleBallSize(e.value);
-        SetExampleColliderBallSize(e.value);
+        SetColliderRadius(e.value);
+        SetExampleColliderRadius(e.value);
         SetText(e.value);
-        Debug.Log("BallSizeSlider");
+        Debug.Log("ColliderRadiusSlider");
     }
 
-    private void SetBallSize(float scale)
+    private void SetColliderRadius(float radius)
     {
         GameObject[] balls = GameObject.FindGameObjectsWithTag("Prop");
 
         foreach (GameObject ball in balls)
         {
-            ball.transform.localScale = new Vector3(scale, scale, scale);
+            ball.GetComponent<SphereCollider>().radius = radius;
         }
     }
 
-    private void SetExampleBallSize(float scale)
+    private void SetExampleColliderRadius(float radius)
     {
-        exampleBall.transform.localScale = new Vector3(scale, scale, scale);
-    }
-
-    private void SetExampleColliderBallSize(float scale)
-    {
+        float scale = 2 * radius;
         exampleColliderBall.transform.localScale = new Vector3(scale, scale, scale);
     }
 

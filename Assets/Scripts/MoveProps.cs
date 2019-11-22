@@ -27,11 +27,19 @@ public class MoveProps : MonoBehaviour
         var rightHandPosition = rightHand.transform.position;
         var numberOfBalls = customisation.GetNumberOfBalls();
 
-        for (var i = 0; i < numberOfBalls; i++)
+        for (var i = 0; i < balls.Length; i++)
         {
             var horizontalOffset = i % 2 != 0 ? ballHorizontalOffset : 0;
             balls[i].transform.position = rightHandPosition + new Vector3(horizontalOffset, (i + 1) * ballVerticalOffset, 0);
             balls[i].velocity = new Vector3(0, 0, 0);
+
+            if ( i < numberOfBalls)
+            {
+                balls[i].gameObject.SetActive(true);
+            } else
+            {
+                balls[i].gameObject.SetActive(false);
+            }
         }
 
         // ball1.transform.position = rightHandPosition + new Vector3(0, ballVerticalOffset, 0);

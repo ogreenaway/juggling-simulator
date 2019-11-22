@@ -16,7 +16,15 @@ public class Clock : MonoBehaviour
         { 4, 0F },
         { 5, 0F },
         { 6, 0F },
-        { 7, 0F }
+        { 7, 0F },
+        { 8, 0F },
+        { 9, 0F },
+        { 10, 0F },
+        { 11, 0F },
+        { 12, 0F },
+        { 13, 0F },
+        { 14, 0F },
+        { 15, 0F }
     };
 
     private VRTK.VRTK_ObjectTooltip currentTimeText;

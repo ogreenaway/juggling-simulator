@@ -37,14 +37,4 @@ public class Customisation : MonoBehaviour
     {
         Physics.gravity = new Vector3(0, -1 * newGravity, 0);
     }
-
-    public void SetBallSize(float scale)
-    {
-        balls = GameObject.FindGameObjectsWithTag("Prop");
-
-        foreach (GameObject ball in balls)
-        {
-            ball.transform.localScale = new Vector3(scale, scale, scale);
-        }
-    }
 }
