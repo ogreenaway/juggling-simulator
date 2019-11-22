@@ -22,6 +22,16 @@ public class MoveProps : MonoBehaviour
         
     }
 
+    public void SetBallHorizontalOffset(float offset)
+    {
+        ballHorizontalOffset = -1F * offset;
+    }
+
+    public void SetBallVerticalOffset(float offset)
+    {
+        ballVerticalOffset = offset;
+    }
+
     public void Move()
     {
         var rightHandPosition = rightHand.transform.position;

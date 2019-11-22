@@ -75,12 +75,12 @@ public class Clock : MonoBehaviour
 
     private void SetCurrentTimeText()
     {
-        currentTimeText.UpdateText(currentTime.ToString());
+        currentTimeText.UpdateText(currentTime.ToString("F1"));
     }
 
     private void SetCurrentRecordText()
     {
-        currentRecordText.UpdateText(GetCurrentRecord().ToString());
+        currentRecordText.UpdateText(GetCurrentRecord().ToString("F1"));
     }
 
 

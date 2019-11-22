@@ -47,6 +47,6 @@ public class BallSizeSlider : MonoBehaviour
 
     private void SetText(float scale)
     {
-        displayText.text = scale.ToString();
+        displayText.text = scale.ToString("F3");
     }
 }

@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using VRTK.Controllables;
 
-public class GravitySlider : MonoBehaviour
+public class yOffsetSlider : MonoBehaviour
 {
     public VRTK_BaseControllable controllable;
     public Text displayText;
@@ -16,11 +16,12 @@ public class GravitySlider : MonoBehaviour
 
     protected virtual void ValueChanged(object sender, ControllableEventArgs e)
     {
-        gameLogic.GetComponent<Customisation>().SetGravity(e.value);
+        gameLogic.GetComponent<MoveProps>().SetBallVerticalOffset(e.value);
+        SetText(e.value);
+    }
 
-        if (displayText != null)
-        {
-            displayText.text = e.value.ToString("F2");
-        }
+    private void SetText(float scale)
+    {
+        displayText.text = scale.ToString("F2");
     }
 }

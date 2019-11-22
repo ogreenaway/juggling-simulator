@@ -26,7 +26,7 @@ public class NumberOfBallsSlider : MonoBehaviour
 
         if (displayText != null)
         {
-            displayText.text = e.value.ToString("F1");
+            displayText.text = e.value.ToString("F0");
         }
     }
 
