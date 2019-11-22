@@ -16,7 +16,7 @@ public class GravitySlider : MonoBehaviour
 
     protected virtual void ValueChanged(object sender, ControllableEventArgs e)
     {
-        gameLogic.GetComponent<Customisation>().SetGravity(e.value);
+        Physics.gravity = new Vector3(0, -1 * e.value, 0);
 
         if (displayText != null)
         {

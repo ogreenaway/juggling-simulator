@@ -5,22 +5,8 @@ using UnityEngine;
 public class MoveProps : MonoBehaviour
 {
     public GameObject rightHand;
-    public GameObject[] balls;
     private float ballVerticalOffset = 0.4F;
     private float ballHorizontalOffset = -0.5F;
-    private Customisation customisation;
-
-    void Start()
-    {
-        customisation = this.gameObject.GetComponent<Customisation>();
-        balls = GameObject.FindGameObjectsWithTag("Prop");
-        
-
-        foreach (GameObject ball in balls)
-        {
-            ball.SetActive(false);
-        }
-    }
 
     public void SetBallHorizontalOffset(float offset)
     {
@@ -35,7 +21,8 @@ public class MoveProps : MonoBehaviour
     public void Move()
     {
         var rightHandPosition = rightHand.transform.position;
-        var numberOfBalls = customisation.GetNumberOfBalls();
+        var numberOfBalls = this.gameObject.GetComponent<Customisation>().GetNumberOfBalls();
+        var balls = this.gameObject.GetComponent<Balls>().balls;
 
         for (var i = 0; i < balls.Length; i++)
         {

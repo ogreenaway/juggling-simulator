@@ -22,7 +22,7 @@ public class DragSlider : MonoBehaviour
 
     private void SetDrag(float drag)
     {
-        GameObject[] balls = gameLogic.GetComponent<MoveProps>().balls;
+        var balls = gameLogic.GetComponent<Balls>().balls;
 
         foreach (GameObject ball in balls)
         {

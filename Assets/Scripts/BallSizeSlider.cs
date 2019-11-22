@@ -8,7 +8,7 @@ public class BallSizeSlider : MonoBehaviour
     public Text displayText;
     public GameObject exampleBall;
     public GameObject exampleColliderBall;
-
+    public GameObject gameLogic;
 
     protected virtual void OnEnable()
     {
@@ -27,7 +27,7 @@ public class BallSizeSlider : MonoBehaviour
 
     private void SetBallSize(float scale)
     {
-        GameObject[] balls = GameObject.FindGameObjectsWithTag("Prop");
+        var balls = gameLogic.GetComponent<Balls>().balls;
 
         foreach (GameObject ball in balls)
         {

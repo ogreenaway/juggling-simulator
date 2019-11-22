@@ -7,6 +7,7 @@ public class ColliderRadiusSlider : MonoBehaviour
     public VRTK_BaseControllable controllable;
     public Text displayText;
     public GameObject exampleColliderBall;
+    public GameObject gameLogic;
 
     protected virtual void OnEnable()
     {
@@ -24,7 +25,7 @@ public class ColliderRadiusSlider : MonoBehaviour
 
     private void SetColliderRadius(float radius)
     {
-        GameObject[] balls = GameObject.FindGameObjectsWithTag("Prop");
+        var balls = gameLogic.GetComponent<Balls>().balls;
 
         foreach (GameObject ball in balls)
         {
