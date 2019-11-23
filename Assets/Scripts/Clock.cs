@@ -80,7 +80,8 @@ public class Clock : MonoBehaviour
 
     private void SetCurrentRecordText()
     {
-        currentRecordText.UpdateText(GetCurrentRecord().ToString("F1"));
+        var numberOfBalls = customisation.GetNumberOfBalls();
+        currentRecordText.UpdateText(numberOfBalls.ToString() + " ball record: " + GetCurrentRecord().ToString("F2"));
     }
 
 

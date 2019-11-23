@@ -27,12 +27,12 @@ public class SettingsSlider : MonoBehaviour
         {
             ballSettings.SetActive(true);
             launcherSettings.SetActive(true);
-            valueText.UpdateText("shown");
+            valueText.UpdateText("on");
         } else
         {
             ballSettings.SetActive(false);
             launcherSettings.SetActive(false);
-            valueText.UpdateText("hidden");
+            valueText.UpdateText("off");
         }
     }
 }
