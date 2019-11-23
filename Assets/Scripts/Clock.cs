@@ -87,6 +87,14 @@ public class Clock : MonoBehaviour
 
     public void StartTimer()
     {
+        // If the timer is already running, see if they are setting a new record before restarting
+        if (shouldTime)
+        {
+            if (GetCurrentRecord() <= currentTime)
+            {
+                SetCurrentRecord(currentTime);
+            }
+        }
         shouldTime = true;
         currentTime = 0F;
         SetCurrentTimeText();
