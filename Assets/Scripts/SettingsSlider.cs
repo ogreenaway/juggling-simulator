@@ -2,11 +2,11 @@
 using UnityEngine.UI;
 using VRTK.Controllables;
 
-public class NumberOfBallsSlider : MonoBehaviour
+public class SettingsSlider : MonoBehaviour
 {
     private VRTK_BaseControllable controllable;
     public VRTK.VRTK_ObjectTooltip valueText;
-    public Customisation customisation;
+    public GameObject settings;
 
     protected virtual void OnEnable()
     {
@@ -16,7 +16,14 @@ public class NumberOfBallsSlider : MonoBehaviour
 
     protected virtual void ValueChanged(object sender, ControllableEventArgs e)
     {
-        customisation.SetNumberOfBalls((int)e.value);
-        valueText.UpdateText(e.value.ToString("F0"));
+        if(e.value > 0.5F)
+        {
+            settings.SetActive(true);
+            valueText.UpdateText("Shown");
+        } else
+        {
+            settings.SetActive(false);
+            valueText.UpdateText("Hidden");
+        }
     }
 }
