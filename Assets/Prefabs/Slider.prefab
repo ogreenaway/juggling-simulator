@@ -129,15 +129,15 @@ MonoBehaviour:
   equalityFidelity: 0.000001
   maximumLength: 0.4
   minMaxThreshold: 0
-  positionTarget: 0.153
-  restingPosition: 0.157
+  positionTarget: 0
+  restingPosition: 0
   forceRestingPositionThreshold: 0
   stepValueRange:
     minimum: 1
-    maximum: 15
-  stepSize: 1
+    maximum: 10
+  stepSize: 0.000001
   useStepAsValue: 1
-  snapToStep: 1
+  snapToStep: 0
   snapForce: 10
   trackingSpeed: 25
   precisionGrab: 1
@@ -249,7 +249,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 441652, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 0.5
+      value: 0.6
       objectReference: {fileID: 0}
     - target: {fileID: 441652, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
       propertyPath: m_LocalPosition.y
@@ -440,7 +440,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
       propertyPath: displayText
-      value: Balls
+      value: Label
       objectReference: {fileID: 0}
     - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
       propertyPath: drawLineFrom

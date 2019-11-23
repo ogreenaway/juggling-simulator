@@ -4,13 +4,12 @@ using VRTK.Controllables;
 
 public class GravitySlider : MonoBehaviour
 {
-    public VRTK_BaseControllable controllable;
+    private VRTK_BaseControllable controllable;
     public Text displayText;
-    public GameObject gameLogic;
 
     protected virtual void OnEnable()
     {
-        controllable = (controllable == null ? GetComponent<VRTK_BaseControllable>() : controllable);
+        controllable = (controllable == null ? this.gameObject.GetComponent<VRTK_BaseControllable>() : controllable);
         controllable.ValueChanged += ValueChanged;
     }
 

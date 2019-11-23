@@ -11,8 +11,8 @@ public class SettingsSlider : MonoBehaviour
 
     private void Start()
     {
-        ballSettings.SetActive(false);
-        launcherSettings.SetActive(false);
+        // ballSettings.SetActive(false);
+        // launcherSettings.SetActive(false);
     }
 
     protected virtual void OnEnable()
