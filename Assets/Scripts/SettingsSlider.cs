@@ -6,7 +6,14 @@ public class SettingsSlider : MonoBehaviour
 {
     private VRTK_BaseControllable controllable;
     public VRTK.VRTK_ObjectTooltip valueText;
-    public GameObject settings;
+    public GameObject ballSettings;
+    public GameObject launcherSettings;
+
+    private void Start()
+    {
+        ballSettings.SetActive(false);
+        launcherSettings.SetActive(false);
+    }
 
     protected virtual void OnEnable()
     {
@@ -18,12 +25,14 @@ public class SettingsSlider : MonoBehaviour
     {
         if(e.value > 0.5F)
         {
-            settings.SetActive(true);
-            valueText.UpdateText("Shown");
+            ballSettings.SetActive(true);
+            launcherSettings.SetActive(true);
+            valueText.UpdateText("shown");
         } else
         {
-            settings.SetActive(false);
-            valueText.UpdateText("Hidden");
+            ballSettings.SetActive(false);
+            launcherSettings.SetActive(false);
+            valueText.UpdateText("hidden");
         }
     }
 }
