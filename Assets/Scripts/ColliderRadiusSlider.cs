@@ -36,7 +36,7 @@ public class ColliderRadiusSlider : MonoBehaviour
     private void SetExampleColliderRadius(float radius)
     {
         float scale = 2 * radius;
-        exampleColliderBall.transform.localScale = new Vector3(scale, scale, scale);
+        exampleColliderBall.transform.localScale = new Vector3(scale, 0.01F, scale);
     }
 
     private void SetText(float scale)

@@ -6,7 +6,6 @@ public class BallSizeSlider : MonoBehaviour
 {
     public VRTK_BaseControllable controllable;
     public Text displayText;
-    public GameObject exampleBall;
     public GameObject exampleColliderBall;
     public GameObject gameLogic;
 
@@ -19,7 +18,6 @@ public class BallSizeSlider : MonoBehaviour
     protected virtual void ValueChanged(object sender, ControllableEventArgs e)
     {
         SetBallSize(e.value);
-        SetExampleBallSize(e.value);
         SetExampleColliderBallSize(e.value);
         SetText(e.value);
         Debug.Log("BallSizeSlider");
@@ -33,11 +31,6 @@ public class BallSizeSlider : MonoBehaviour
         {
             ball.transform.localScale = new Vector3(scale, scale, scale);
         }
-    }
-
-    private void SetExampleBallSize(float scale)
-    {
-        exampleBall.transform.localScale = new Vector3(scale, scale, scale);
     }
 
     private void SetExampleColliderBallSize(float scale)
