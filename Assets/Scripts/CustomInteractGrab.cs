@@ -5,11 +5,32 @@ using VRTK;
 
 public class CustomInteractGrab : VRTK.VRTK_InteractGrab
 {
-    public GameObject siteSwap;
+    public SiteSwaps siteSwaps;
+
     public override void OnControllerGrabInteractableObject(ObjectInteractEventArgs e)
     {
-        // Debug.Log("Grabed:" + e.controllerReference.index + " and " + e.target.GetInstanceID());
-        // siteSwap.GetComponent<SiteSwaps>().RecordGrab(e.controllerReference.index, e.target.GetInstanceID());
+        if(e.target.tag == "Prop")
+        {
+            siteSwaps.OnCatch(e.controllerReference.index, e.target.GetInstanceID());
+        } else
+        {
+            Debug.Log("You grabbed something that wasn't a prop");
+        }
+        
         base.OnControllerGrabInteractableObject(e);
     }
+
+    public override void OnControllerUngrabInteractableObject(ObjectInteractEventArgs e)
+    {
+        if (e.target.tag == "Prop")
+        {
+            siteSwaps.OnThrow(e.controllerReference.index, e.target.GetInstanceID());
+        }
+        else
+        {
+            Debug.Log("You released something that wasn't a prop");
+        }
+        base.OnControllerUngrabInteractableObject(e);
+    }
+
 }

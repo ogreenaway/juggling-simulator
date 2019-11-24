@@ -899,7 +899,7 @@ MonoBehaviour:
   controllerAttachPoint: {fileID: 0}
   controllerEvents: {fileID: 0}
   interactTouch: {fileID: 0}
-  siteSwap: {fileID: 0}
+  siteSwaps: {fileID: 956799488}
 --- !u!114 &109582316
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7146,6 +7146,7 @@ GameObject:
   - component: {fileID: 956799485}
   - component: {fileID: 956799486}
   - component: {fileID: 956799487}
+  - component: {fileID: 956799488}
   m_Layer: 0
   m_Name: '[Game Logic]'
   m_TagString: Untagged
@@ -7234,6 +7235,23 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   furniture: {fileID: 669729373}
+--- !u!114 &956799488
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 956799481}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e9b7693cc3776314b94677be5a6b3f49, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  siteswap: 
+  count: 0
+  previousControllerIndex: 0
+  siteSwapList: []
+  currentBeat: 0
 --- !u!1001 &957703572
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -11045,7 +11063,7 @@ MonoBehaviour:
   controllerAttachPoint: {fileID: 0}
   controllerEvents: {fileID: 0}
   interactTouch: {fileID: 0}
-  siteSwap: {fileID: 0}
+  siteSwaps: {fileID: 956799488}
 --- !u!114 &1408711853
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -17448,11 +17466,6 @@ PrefabInstance:
       propertyPath: stepSize
       value: 1
       objectReference: {fileID: 0}
-    - target: {fileID: 8273632649334790443, guid: 83d44a0c7ca95804993a8f94315bb3f7,
-        type: 3}
-      propertyPath: customisation
-      value: 
-      objectReference: {fileID: 956799484}
     - target: {fileID: 6547852510290921977, guid: 83d44a0c7ca95804993a8f94315bb3f7,
         type: 3}
       propertyPath: displayText
@@ -17498,6 +17511,11 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8273632649334790443, guid: 83d44a0c7ca95804993a8f94315bb3f7,
+        type: 3}
+      propertyPath: customisation
+      value: 
+      objectReference: {fileID: 956799484}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 83d44a0c7ca95804993a8f94315bb3f7, type: 3}
 --- !u!1 &5226109416246441960 stripped

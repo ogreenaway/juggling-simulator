@@ -17,7 +17,6 @@ GameObject:
   - component: {fileID: 5205844565909569943}
   - component: {fileID: 5205844565909569940}
   - component: {fileID: 5205844565909569941}
-  - component: {fileID: 5205844565909569938}
   - component: {fileID: 731020050322216842}
   - component: {fileID: 6213465742599343822}
   m_Layer: 0
@@ -210,26 +209,6 @@ MonoBehaviour:
   durationOnUse: 0
   intervalOnUse: 0.05
   cancelOnUnuse: 1
-  objectToAffect: {fileID: 0}
---- !u!114 &5205844565909569938
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 5205844565909569939}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: abc4b5dd2be1cea4aaea2850b910d3f9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  nearTouchHighlight: {r: 0, g: 0, b: 0, a: 0}
-  touchHighlight: {r: 0.14999996, g: 0.4, b: 0.11562498, a: 1}
-  grabHighlight: {r: 0.14999996, g: 0.4, b: 0.11562498, a: 1}
-  useHighlight: {r: 0, g: 0, b: 0, a: 0}
-  objectToMonitor: {fileID: 0}
-  objectToHighlight: {fileID: 0}
-  objectHighlighter: {fileID: 0}
   objectToAffect: {fileID: 0}
 --- !u!114 &731020050322216842
 MonoBehaviour:
