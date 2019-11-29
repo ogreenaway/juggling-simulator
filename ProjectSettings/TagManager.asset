@@ -7,6 +7,8 @@ TagManager:
   - ExcludeTeleport
   - Prop
   - Floor
+  - FakeProp
+  - Paint
   layers:
   - Default
   - TransparentFX

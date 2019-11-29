@@ -7,6 +7,7 @@ public class NumberOfBallsSlider : MonoBehaviour
     private VRTK_BaseControllable controllable;
     public VRTK.VRTK_ObjectTooltip valueText;
     public Customisation customisation;
+    public PaintBrush paintBrush;
 
     protected virtual void OnEnable()
     {
@@ -18,5 +19,6 @@ public class NumberOfBallsSlider : MonoBehaviour
     {
         customisation.SetNumberOfBalls((int)e.value);
         valueText.UpdateText(e.value.ToString("F0"));
+        paintBrush.DisplayBalls((int)e.value);
     }
 }
