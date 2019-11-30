@@ -6995,7 +6995,6 @@ GameObject:
   - component: {fileID: 1113077905}
   - component: {fileID: 1113077904}
   - component: {fileID: 1113077903}
-  - component: {fileID: 1113077902}
   m_Layer: 0
   m_Name: Example Collider Size
   m_TagString: Untagged
@@ -7003,19 +7002,6 @@ GameObject:
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!135 &1113077902
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1113077901}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 0
-  serializedVersion: 2
-  m_Radius: 0.5
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1113077903
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -10315,9 +10301,9 @@ SphereCollider:
   m_GameObject: {fileID: 1526009420}
   m_Material: {fileID: 0}
   m_IsTrigger: 0
-  m_Enabled: 0
+  m_Enabled: 1
   serializedVersion: 2
-  m_Radius: 1
+  m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!23 &1526009422
 MeshRenderer:
@@ -13399,12 +13385,12 @@ PrefabInstance:
     - target: {fileID: 1071082832117917741, guid: 83d44a0c7ca95804993a8f94315bb3f7,
         type: 3}
       propertyPath: positionTarget
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1071082832117917741, guid: 83d44a0c7ca95804993a8f94315bb3f7,
         type: 3}
       propertyPath: restingPosition
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1071082832117917741, guid: 83d44a0c7ca95804993a8f94315bb3f7,
         type: 3}

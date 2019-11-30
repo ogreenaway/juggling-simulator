@@ -12,23 +12,38 @@ public class PaintBrush : MonoBehaviour
     {
     }
 
+    private void ColourRealAndFakeProps(int index, Material material)
+    {
+        fakeJugglingBalls[index].GetComponent<Renderer>().material = material;
+        gameLogic.GetComponent<Balls>().balls[index].GetComponent<Renderer>().material = material;
+    }
+
     private void OnTriggerEnter(Collider collider)
     {
         Debug.Log("BOOM 2!");
 
-        if (collider.gameObject.tag == "Paint")
-        {
-            bristles.material = collider.gameObject.GetComponent<Renderer>().material;
-        }
+        string tag = collider.gameObject.tag;
+        Renderer colliderRenderer = collider.gameObject.GetComponent<Renderer>();
 
-        if (collider.gameObject.tag == "FakeProp")
+        switch (tag)
         {
-            int index = System.Array.IndexOf(fakeJugglingBalls, collider.gameObject);
-            Debug.Log("index: " + index);
-            Material material = bristles.material;
-
-            collider.GetComponent<Renderer>().material = material;
-            gameLogic.GetComponent<Balls>().balls[index].GetComponent<Renderer>().material = material;
+            case "Paint":
+                bristles.material = colliderRenderer.material;
+                break;
+            case "FakeProp":
+                int fakePropIndex = System.Array.IndexOf(fakeJugglingBalls, collider.gameObject);
+                ColourRealAndFakeProps(fakePropIndex, bristles.material);
+                break;
+            case "Prop":
+                int realPropIndex = System.Array.IndexOf(gameLogic.GetComponent<Balls>().balls, collider.gameObject);
+                ColourRealAndFakeProps(realPropIndex, bristles.material);
+                break;
+            default:                
+                if (colliderRenderer)
+                {
+                    colliderRenderer.material = bristles.material;
+                }                    
+                break;
         }
     }
 
