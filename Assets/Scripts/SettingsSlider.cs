@@ -25,13 +25,13 @@ public class SettingsSlider : MonoBehaviour
     {
         if(e.value > 0.5F)
         {
-            ballSettings.SetActive(true);
-            launcherSettings.SetActive(true);
+            ballSettings.transform.position = new Vector3(0, 1, 0);
+            launcherSettings.transform.position = new Vector3(0, 1, 0);
             valueText.UpdateText("on");
         } else
         {
-            ballSettings.SetActive(false);
-            launcherSettings.SetActive(false);
+            ballSettings.transform.position = new Vector3(0, -2, 0);
+            launcherSettings.transform.position = new Vector3(0, -2, 0);
             valueText.UpdateText("off");
         }
     }
