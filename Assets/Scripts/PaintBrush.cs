@@ -8,20 +8,14 @@ public class PaintBrush : MonoBehaviour
     public GameObject gameLogic;
     public Renderer bristles;
 
-    void Start()
-    {
-    }
-
     private void ColourRealAndFakeProps(int index, Material material)
     {
         fakeJugglingBalls[index].GetComponent<Renderer>().material = material;
-        gameLogic.GetComponent<Balls>().balls[index].GetComponent<Renderer>().material = material;
+        gameLogic.GetComponent<Props>().balls[index].GetComponent<Renderer>().material = material;
     }
 
     private void OnTriggerEnter(Collider collider)
     {
-        Debug.Log("BOOM 2!");
-
         string tag = collider.gameObject.tag;
         Renderer colliderRenderer = collider.gameObject.GetComponent<Renderer>();
 
@@ -35,7 +29,7 @@ public class PaintBrush : MonoBehaviour
                 ColourRealAndFakeProps(fakePropIndex, bristles.material);
                 break;
             case "Prop":
-                int realPropIndex = System.Array.IndexOf(gameLogic.GetComponent<Balls>().balls, collider.gameObject);
+                int realPropIndex = System.Array.IndexOf(gameLogic.GetComponent<Props>().balls, collider.gameObject);
                 ColourRealAndFakeProps(realPropIndex, bristles.material);
                 break;
             default:                
@@ -51,7 +45,6 @@ public class PaintBrush : MonoBehaviour
     {
         for (int i = 0; i < fakeJugglingBalls.Length; i++)
         {
-
             fakeJugglingBalls[i].SetActive(i < numberOfBalls);
         }
     }

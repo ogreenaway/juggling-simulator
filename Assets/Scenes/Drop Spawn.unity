@@ -3752,11 +3752,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onChange.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1687395113}
+      objectReference: {fileID: 956799486}
     - target: {fileID: 5014464815753669094, guid: a6ef207f24027d44ca1df4d18b14b421,
         type: 3}
       propertyPath: onChange.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnChange
+      value: SetDrag
       objectReference: {fileID: 0}
     - target: {fileID: 5014464815753669094, guid: a6ef207f24027d44ca1df4d18b14b421,
         type: 3}
@@ -4474,11 +4474,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onChange.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 2062425470}
+      objectReference: {fileID: 956799486}
     - target: {fileID: 5014464815753669094, guid: a6ef207f24027d44ca1df4d18b14b421,
         type: 3}
       propertyPath: onChange.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnChange
+      value: SetTrail
       objectReference: {fileID: 0}
     - target: {fileID: 5014464815753669094, guid: a6ef207f24027d44ca1df4d18b14b421,
         type: 3}
@@ -6244,6 +6244,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   balls: []
+  exampleBallSize: {fileID: 1526009420}
+  exampleColliderBall: {fileID: 1113077901}
 --- !u!114 &956799487
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6257,6 +6259,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   furniture: {fileID: 669729373}
+  isShowing: 1
 --- !u!114 &956799488
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7705,26 +7708,6 @@ Transform:
   m_Father: {fileID: 908303374}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &1133248625 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 800699687768180831, guid: a6ef207f24027d44ca1df4d18b14b421,
-    type: 3}
-  m_PrefabInstance: {fileID: 1218177285}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1133248626
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1133248625}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45613d421b5099a42b33cfc7455463c9, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  exampleColliderBall: {fileID: 1113077901}
-  props: {fileID: 956799486}
 --- !u!1 &1150812166
 GameObject:
   m_ObjectHideFlags: 0
@@ -8244,7 +8227,7 @@ PrefabInstance:
     - target: {fileID: 5014464815753669094, guid: a6ef207f24027d44ca1df4d18b14b421,
         type: 3}
       propertyPath: onChange.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: onChange
+      value: OnChange
       objectReference: {fileID: 0}
     - target: {fileID: 5014464815753669094, guid: a6ef207f24027d44ca1df4d18b14b421,
         type: 3}
@@ -8689,11 +8672,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onChange.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1133248626}
+      objectReference: {fileID: 956799486}
     - target: {fileID: 5014464815753669094, guid: a6ef207f24027d44ca1df4d18b14b421,
         type: 3}
       propertyPath: onChange.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnChange
+      value: SetColliderRadius
       objectReference: {fileID: 0}
     - target: {fileID: 5014464815753669094, guid: a6ef207f24027d44ca1df4d18b14b421,
         type: 3}
@@ -11474,26 +11457,6 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1577219852 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 800699687768180831, guid: a6ef207f24027d44ca1df4d18b14b421,
-    type: 3}
-  m_PrefabInstance: {fileID: 2120919293}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1577219853
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1577219852}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d7d5168a342bca47b9597f5c676bb30, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  exampleColliderBall: {fileID: 1526009420}
-  props: {fileID: 956799486}
 --- !u!4 &1586635078 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5205844565909569933, guid: 92779d2ec4b02c0449fbf355d6681905,
@@ -12284,25 +12247,6 @@ MonoBehaviour:
   m_Script: {fileID: 0}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &1687395112 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 800699687768180831, guid: a6ef207f24027d44ca1df4d18b14b421,
-    type: 3}
-  m_PrefabInstance: {fileID: 574122516}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &1687395113
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1687395112}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 86714a6c7df53c44bb02cb32dc494b9e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Props: {fileID: 956799486}
 --- !u!1 &1730817282
 GameObject:
   m_ObjectHideFlags: 0
@@ -14277,25 +14221,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 2050191379}
   m_Mesh: {fileID: 10207, guid: 0000000000000000e000000000000000, type: 0}
---- !u!1 &2062425468 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 800699687768180831, guid: a6ef207f24027d44ca1df4d18b14b421,
-    type: 3}
-  m_PrefabInstance: {fileID: 697537369}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &2062425470
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2062425468}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 027738a8483d34247a4eb3bdb6bb7f1e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  props: {fileID: 956799486}
 --- !u!1 &2068185838
 GameObject:
   m_ObjectHideFlags: 0
@@ -14719,11 +14644,11 @@ PrefabInstance:
         type: 3}
       propertyPath: onChange.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
-      objectReference: {fileID: 1577219853}
+      objectReference: {fileID: 956799486}
     - target: {fileID: 5014464815753669094, guid: a6ef207f24027d44ca1df4d18b14b421,
         type: 3}
       propertyPath: onChange.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
-      value: OnChange
+      value: SetRadius
       objectReference: {fileID: 0}
     - target: {fileID: 5014464815753669094, guid: a6ef207f24027d44ca1df4d18b14b421,
         type: 3}

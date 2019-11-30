@@ -14,7 +14,7 @@ public class CustomInteractGrab : VRTK.VRTK_InteractGrab
             siteSwaps.OnCatch(e.controllerReference.index, e.target.GetInstanceID());
         } else
         {
-            Debug.Log("You grabbed something that wasn't a prop");
+            // Debug.Log("You grabbed something that wasn't a prop");
         }
         
         base.OnControllerGrabInteractableObject(e);
@@ -28,7 +28,7 @@ public class CustomInteractGrab : VRTK.VRTK_InteractGrab
         }
         else
         {
-            Debug.Log("You released something that wasn't a prop");
+            //Debug.Log("You released something that wasn't a prop");
         }
         base.OnControllerUngrabInteractableObject(e);
     }

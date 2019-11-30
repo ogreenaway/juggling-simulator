@@ -22,7 +22,7 @@ public class MoveProps : MonoBehaviour
     {
         var rightHandPosition = rightHand.transform.position;
         var numberOfBalls = this.gameObject.GetComponent<Customisation>().GetNumberOfBalls();
-        var balls = this.gameObject.GetComponent<Balls>().balls;
+        var balls = this.gameObject.GetComponent<Props>().balls;
 
         for (var i = 0; i < balls.Length; i++)
         {

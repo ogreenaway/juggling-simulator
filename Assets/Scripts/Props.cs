@@ -1,29 +1,59 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using VRTK;
 
 public class Props : MonoBehaviour
 {
-    public GameObject rightHand;
-    public GameObject leftHand;
-    public Rigidbody ballPrefab;
-    public Vector3 ballOffset = new Vector3(0,0.3f,0);
-    public float ballSpeed = 2;
+    public GameObject[] balls = new GameObject[0];
+    public GameObject exampleBallSize;
+    public GameObject exampleColliderBall;
 
-    public void CreateBallAtRightHand()
+    void Start()
     {
-        CreateBall(rightHand);
+        balls = GameObject.FindGameObjectsWithTag("Prop");
+
+        foreach (GameObject ball in balls)
+        {
+            ball.SetActive(false);
+        }
     }
 
-    public void CreateBallAtLeftHand()
+    public void SetRadius(float radius)
     {
-        CreateBall(leftHand);
+        var scale = new Vector3(radius, radius, radius);
+
+        foreach (GameObject ball in balls)
+        {
+            ball.transform.localScale = scale;
+        }
+
+        exampleBallSize.transform.localScale = scale;
     }
 
-    private void CreateBall(GameObject hand)
+    public void SetDrag(float drag)
     {
-        var ballInstance = Instantiate(ballPrefab, hand.transform.position + ballOffset, hand.transform.rotation);
-        ballInstance.velocity = hand.transform.up * ballSpeed;
+        foreach (GameObject ball in balls)
+        {
+            ball.GetComponent<Rigidbody>().drag = drag;
+        }
+    }
+
+    public void SetColliderRadius(float radius)
+    {
+        foreach (GameObject ball in balls)
+        {
+            ball.GetComponent<SphereCollider>().radius = radius;
+        }
+
+        float scale = 2 * radius;
+        exampleColliderBall.transform.localScale = new Vector3(scale, 0.01F, scale);
+    }
+
+    public void SetTrail(float duration)
+    {
+        foreach (GameObject ball in balls)
+        {
+            ball.GetComponent<TrailRenderer>().time = duration;
+        }
     }
 }
