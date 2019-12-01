@@ -2,11 +2,25 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MoveProps : MonoBehaviour
+public class Launcher : MonoBehaviour
 {
-    public GameObject rightHand;
     private float ballVerticalOffset = 0.4F;
     private float ballHorizontalOffset = -0.5F;
+    private  int numberOfBalls = 3;
+
+    public GameObject rightHand;
+
+    private void Start()
+    {
+        GameEvents.current.OnNumberOfBallsChange += SetNumberOfBalls;
+        GameEvents.current.OnLaunch += Launch;
+    }
+
+    private void OnDestroy()
+    {
+        GameEvents.current.OnNumberOfBallsChange -= SetNumberOfBalls;
+        GameEvents.current.OnLaunch -= Launch;
+    }
 
     public void SetBallHorizontalOffset(float offset)
     {
@@ -18,10 +32,14 @@ public class MoveProps : MonoBehaviour
         ballVerticalOffset = offset;
     }
 
-    public void Move()
+    private void SetNumberOfBalls(int newNumberOfBalls)
+    {
+        numberOfBalls = newNumberOfBalls;
+    }
+
+    private void Launch()
     {
         var rightHandPosition = rightHand.transform.position;
-        var numberOfBalls = this.gameObject.GetComponent<Customisation>().GetNumberOfBalls();
         var balls = this.gameObject.GetComponent<Props>().balls;
 
         for (var i = 0; i < balls.Length; i++)

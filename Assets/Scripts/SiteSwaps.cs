@@ -25,10 +25,17 @@ public class SiteSwaps : MonoBehaviour
 
     private void Start()
     {
-        // Test();
+        GameEvents.current.OnLaunch += Reset;
+        GameEvents.current.OnCatch += OnCatch;
     }
 
-    public void Reset()
+    private void OnDestroy()
+    {
+        GameEvents.current.OnLaunch -= Reset;
+        GameEvents.current.OnCatch -= OnCatch;
+    }
+
+    private void Reset()
     {
         ballHeldInHand = new Dictionary<uint, int>();
         siteSwapList = new List<string>() { "-" };
@@ -197,19 +204,10 @@ public class SiteSwaps : MonoBehaviour
         siteSwapList[index] = value;
     }
 
-    public void OnCatch(uint controllerId, int ballId)
+    private void OnCatch(uint controllerId, int ballId)
     {
         SaveControllerId(controllerId);
         ballHeldInHand[controllerId] = ballId;
-
-
-        // if same side
-        // get ball in other hand
-        // pretend that was just caught
-
-        // then catch this ball
-
-        // Debug.Log("OnCatch: Controller ID:" + controllerId + ". Ball ID " + ballId);
 
         if (controllerIdOfPreviousCatch == controllerId)
         {

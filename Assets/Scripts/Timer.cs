@@ -2,13 +2,15 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Clock : MonoBehaviour
+public class Timer : MonoBehaviour
 {
-    public float currentTime = 0F;
-    public bool shouldTime = false;
-    public GameObject currentTimeTextGameObject;
-    public GameObject currentRecordTextGameObject;
-    public Dictionary<int, float> records = new Dictionary<int, float>()
+    public VRTK.VRTK_ObjectTooltip currentTimeText;
+    public VRTK.VRTK_ObjectTooltip currentRecordText;
+
+    private int numberOfBalls = 3;
+    private float currentTime = 0F;
+    private bool isTimerRunning = false;
+    private Dictionary<int, float> records = new Dictionary<int, float>()
     {
         { 1, 0F },
         { 2, 0F },
@@ -27,23 +29,24 @@ public class Clock : MonoBehaviour
         { 15, 0F }
     };
 
-    private VRTK.VRTK_ObjectTooltip currentTimeText;
-    private VRTK.VRTK_ObjectTooltip currentRecordText;
-    private Customisation customisation;
-
     private void Start()
     {
-        currentTimeText = currentTimeTextGameObject.GetComponent<VRTK.VRTK_ObjectTooltip>();
-        currentRecordText = currentRecordTextGameObject.GetComponent<VRTK.VRTK_ObjectTooltip>();
-        customisation = this.gameObject.GetComponent<Customisation>();
-
+        GameEvents.current.OnNumberOfBallsChange += OnNumberOfBallsChange;
+        GameEvents.current.OnDrop += StopTimer;
+        GameEvents.current.OnLaunch += StartTimer;
         SetCurrentTimeText();
         SetCurrentRecordText();
     }
 
-    void Update()
+    private void OnDestroy()
     {
-        if (shouldTime)
+        GameEvents.current.OnNumberOfBallsChange -= OnNumberOfBallsChange;
+        GameEvents.current.OnDrop -= StopTimer;
+    }
+
+    private void Update()
+    {
+        if (isTimerRunning)
         {
             currentTime += Time.deltaTime;
             SetCurrentTimeText();
@@ -52,24 +55,14 @@ public class Clock : MonoBehaviour
 
     private float GetCurrentRecord()
     {
-        var numberOfBalls = customisation.GetNumberOfBalls();
-        /*
-        Debug.Log("numberOfBalls" + numberOfBalls.ToString());
-        Debug.Log("records[numberOfBalls]" + records.ToString());
-
-        foreach (var record in records)
-        {
-            Debug.Log(string.Format("Employee with key {0}: value={1}", record.Key, record.Value));
-        }
-        */
-
         // todo: throw error if not underfined
+        // if undefined then return 0
         return records[numberOfBalls];
     }
 
     private void SetCurrentRecord(float newRecord)
     {
-        var numberOfBalls = customisation.GetNumberOfBalls();
+        // todo: if doesn't exist, create it
         records[numberOfBalls] = newRecord;
     }
 
@@ -80,30 +73,38 @@ public class Clock : MonoBehaviour
 
     private void SetCurrentRecordText()
     {
-        var numberOfBalls = customisation.GetNumberOfBalls();
         currentRecordText.UpdateText(numberOfBalls.ToString() + " ball record: " + GetCurrentRecord().ToString("F2"));
     }
 
+    private void OnNumberOfBallsChange(int newNumberOfBalls)
+    {
+        StopTimer();
 
-    public void StartTimer()
+        numberOfBalls = newNumberOfBalls;
+        // Update UI with new record for new number of balls
+        SetCurrentTimeText();
+        SetCurrentRecordText();
+    }
+
+    private void StartTimer()
     {
         // If the timer is already running, see if they are setting a new record before restarting
-        if (shouldTime)
+        if (isTimerRunning)
         {
             if (GetCurrentRecord() <= currentTime)
             {
                 SetCurrentRecord(currentTime);
             }
         }
-        shouldTime = true;
+        isTimerRunning = true;
         currentTime = 0F;
         SetCurrentTimeText();
         SetCurrentRecordText();
     }
 
-    public void StopTimer()
+    private void StopTimer()
     {
-        if (shouldTime) // a previous ball stopped the time
+        if (isTimerRunning) // a previous ball stopped the timer
         {
             if (GetCurrentRecord() <= currentTime)
             {
@@ -112,13 +113,7 @@ public class Clock : MonoBehaviour
                 SetCurrentTimeText();
             }
 
-            shouldTime = false;
+            isTimerRunning = false;
         }
-    }
-
-    public void UpdateScoreBoard()
-    {
-        SetCurrentTimeText();
-        SetCurrentRecordText();
     }
 }

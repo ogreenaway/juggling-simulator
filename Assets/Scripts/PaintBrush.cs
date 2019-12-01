@@ -5,13 +5,23 @@ using UnityEngine;
 public class PaintBrush : MonoBehaviour
 {
     public GameObject[] fakeJugglingBalls = new GameObject[0];
-    public GameObject gameLogic;
+    public Props props;
     public Renderer bristles;
+
+    private void Start()
+    {
+        GameEvents.current.OnNumberOfBallsChange += DisplayBalls;
+    }
+
+    private void OnDestroy()
+    {
+        GameEvents.current.OnNumberOfBallsChange -= DisplayBalls;
+    }
 
     private void ColourRealAndFakeProps(int index, Material material)
     {
         fakeJugglingBalls[index].GetComponent<Renderer>().material = material;
-        gameLogic.GetComponent<Props>().balls[index].GetComponent<Renderer>().material = material;
+        props.balls[index].GetComponent<Renderer>().material = material;
     }
 
     private void OnTriggerEnter(Collider collider)
@@ -29,7 +39,8 @@ public class PaintBrush : MonoBehaviour
                 ColourRealAndFakeProps(fakePropIndex, bristles.material);
                 break;
             case "Prop":
-                int realPropIndex = System.Array.IndexOf(gameLogic.GetComponent<Props>().balls, collider.gameObject);
+                // todo: remove dependency on props
+                int realPropIndex = System.Array.IndexOf(props.balls, collider.gameObject);
                 ColourRealAndFakeProps(realPropIndex, bristles.material);
                 break;
             default:                
@@ -41,7 +52,7 @@ public class PaintBrush : MonoBehaviour
         }
     }
 
-    public void DisplayBalls(int numberOfBalls)
+    private void DisplayBalls(int numberOfBalls)
     {
         for (int i = 0; i < fakeJugglingBalls.Length; i++)
         {
