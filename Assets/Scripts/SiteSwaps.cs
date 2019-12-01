@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using VRTK;
 
 public class SiteSwaps : MonoBehaviour
 {
@@ -20,7 +21,7 @@ public class SiteSwaps : MonoBehaviour
     public Dictionary<uint, int> ballHeldInHand = new Dictionary<uint, int>();
     public uint firstController = 999;
     public uint secondController = 999;
-    public VRTK.VRTK_ObjectTooltip text;
+    // public VRTK.VRTK_ObjectTooltip text;
 
 
     private void Start()
@@ -204,7 +205,7 @@ public class SiteSwaps : MonoBehaviour
         siteSwapList[index] = value;
     }
 
-    private void OnCatch(uint controllerId, int ballId)
+    public void OnCatch(uint controllerId, int ballId)
     {
         SaveControllerId(controllerId);
         ballHeldInHand[controllerId] = ballId;
@@ -227,7 +228,7 @@ public class SiteSwaps : MonoBehaviour
 
         Catch(controllerId, ballId);
         controllerIdOfPreviousCatch = controllerId;
-        text.UpdateText("SiteSwap: " + string.Join("", siteSwapList.ToArray()));
+        // text.UpdateText("SiteSwap: " + string.Join("", siteSwapList.ToArray()));
     }
 
     void Catch(uint controllerId, int ballId)
