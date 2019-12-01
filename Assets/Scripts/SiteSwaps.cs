@@ -1,48 +1,108 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
 using UnityEngine;
 using VRTK;
 
 public class SiteSwaps : MonoBehaviour
 {
-    // OLD
-    public string siteswap = "";
-    public int count = 0;
-    public Dictionary<int, int> map = new Dictionary<int, int>();
-    public uint previousControllerIndex;
-
-
-    // NEW
-    public List<string> siteSwapList = new List<string>() { "-" };
-    public int currentBeat = 0;
-    public Dictionary<int, int> beatLastCaughtMap = new Dictionary<int, int>();
-    public uint controllerIdOfPreviousThrow; // not used
-    public uint controllerIdOfPreviousCatch;
-    public Dictionary<uint, int> ballHeldInHand = new Dictionary<uint, int>();
-    public uint firstController = 999;
-    public uint secondController = 999;
-    // public VRTK.VRTK_ObjectTooltip text;
-
+    private List<string> siteSwapList = new List<string>() { "_" };
+    private int currentBeat = 0;
+    private Dictionary<int, int> beatLastCaughtMap = new Dictionary<int, int>();
+    private uint controllerIdOfPreviousCatch;
+    private Dictionary<uint, int> ballHeldInHand = new Dictionary<uint, int>();
+    public VRTK_ObjectTooltip text;
 
     private void Start()
     {
         GameEvents.current.OnLaunch += Reset;
         GameEvents.current.OnCatch += OnCatch;
+        GameEvents.current.OnThrow += OnThrow;
+        //Test();
     }
 
     private void OnDestroy()
     {
         GameEvents.current.OnLaunch -= Reset;
         GameEvents.current.OnCatch -= OnCatch;
+        GameEvents.current.OnThrow -= OnThrow;
     }
 
-    private void Reset()
+    private string IntToHex(int i)
     {
-        ballHeldInHand = new Dictionary<uint, int>();
-        siteSwapList = new List<string>() { "-" };
-        currentBeat = 0;
-        beatLastCaughtMap = new Dictionary<int, int>();
-        controllerIdOfPreviousCatch = 0;
+        // TODO: i > 9 => a,b,c
+        // maybe printf("%x\n", i);
+        return i.ToString();
+    }
+
+    private void SetSiteSwapList(int index, string value)
+    {
+        // We are calculating using the catches so 531 would be calculated
+        // __1, _31, 531
+        if (siteSwapList.Count <= index)
+        {
+            // In the example of 531 we need to add the "__" before the 1
+            // There might be a nicer way to do this in C#
+            for (int i = 0; i <= index - siteSwapList.Count; i++)
+            {
+                siteSwapList.Add("_");
+            }
+            // I'm not quite sure why there is an off-by-one error here
+            siteSwapList.Add("_");
+        } 
+        // Now it is safe to set the value
+        siteSwapList[index] = value;   
+    }
+
+    public void OnCatch(uint controllerId, int ballId)
+    {
+        ballHeldInHand[controllerId] = ballId;
+
+        // If you catch twice from the same hand then either a 2 or 0 just happened
+        if (controllerIdOfPreviousCatch == controllerId)
+        {
+            // The controllerIds are hardcoded to 1 and 2
+            uint otherContollerId = controllerId == 1 ? 2 : (uint)1;
+            // Find out if the other hand is holding a ball
+            if (ballHeldInHand.TryGetValue(otherContollerId, out int heldBallId))
+            {
+                // A 2 is effectively a held catch
+                Catch(controllerId, heldBallId);
+            } else
+            {
+                // Not much to do for a 0
+                SetSiteSwapList(currentBeat, "0");
+                currentBeat++;
+            }
+        }
+
+        // We've already dealt with the 0 or 2 before this catch so now deal with this catch
+        Catch(controllerId, ballId);
+        // Tidy up
+        controllerIdOfPreviousCatch = controllerId;
+        // Render to screen
+        text.UpdateText("SiteSwap: " + string.Join("", siteSwapList.ToArray()));
+    }
+
+    void Catch(uint controllerId, int ballId)
+    {
+        if (beatLastCaughtMap.TryGetValue(ballId, out int beatLastCaught))
+        {
+            // Ball has been caught before so calculate it's siteswap
+            var beatDifference = currentBeat - beatLastCaught;
+            SetSiteSwapList(beatLastCaught, IntToHex(beatDifference));
+        }
+
+        beatLastCaughtMap[ballId] = currentBeat;
+        currentBeat++;
+    }
+
+    private void OnThrow(uint controllerId, int ballId)
+    {
+        if (ballHeldInHand[controllerId] != ballId)
+        {
+            Debug.LogError("BUG: Somehow threw ball " + ballId + " from hand holding " + ballHeldInHand[controllerId]);
+        }
+        ballHeldInHand.Remove(controllerId);
     }
 
     private void Test()
@@ -82,35 +142,22 @@ public class SiteSwaps : MonoBehaviour
             OnCatch(right, green);
             OnCatch(left, blue);
 
-            OnThrow(right, green); // 4 thrown
             OnCatch(right, red);
             // Add two here
-            OnThrow(right, red); // 3 thrown from same hand as last throw
             OnCatch(right, green); // 4 caught
-            OnThrow(left, blue); // 4
             OnCatch(left, red); // 3 caught
-            OnThrow(left, red); // 3 thrown from same hand as last throw
             OnCatch(left, blue);
 
-
-            OnThrow(right, green); // 4 thrown
             OnCatch(right, red);
             // Add two here
-            OnThrow(right, red); // 3 thrown from same hand as last throw
             OnCatch(right, green); // 4 caught
-            OnThrow(left, blue); // 4
             OnCatch(left, red); // 3 caught
-            OnThrow(left, red); // 3 thrown from same hand as last throw
             OnCatch(left, blue);
 
-            OnThrow(right, green); // 4 thrown
             OnCatch(right, red);
             // Add two here
-            OnThrow(right, red); // 3 thrown from same hand as last throw
             OnCatch(right, green); // 4 caught
-            OnThrow(left, blue); // 4
             OnCatch(left, red); // 3 caught
-            OnThrow(left, red); // 3 thrown from same hand as last throw
             OnCatch(left, blue);
 
 
@@ -135,153 +182,41 @@ public class SiteSwaps : MonoBehaviour
             OnCatch(right, green);
             OnCatch(right, blue);
         }
-        
+
         SS423();
-        Debug.Log("SiteSwap 423: " + string.Join("", siteSwapList.ToArray()));
+        Expect("42342342342342342342342_", string.Join("", siteSwapList.ToArray()));
         Reset();
 
         SS3();
-        Debug.Log("SiteSwap 3: " + string.Join("", siteSwapList.ToArray()));
+        Expect("333333_", string.Join("", siteSwapList.ToArray()));
         Reset();
 
         SS531();
-        Debug.Log("SiteSwap 531: " + string.Join("", siteSwapList.ToArray()));      
+        Expect("531", string.Join("", siteSwapList.ToArray()));
         Reset();
 
         SS40();
-        Debug.Log("SiteSwap 40: " + string.Join("", siteSwapList.ToArray()));
+        Expect("4040404040404040_0_", string.Join("", siteSwapList.ToArray()));
     }
 
-    private string IntToHex(int i)
+    // To reset unit tests
+    private void Reset()
     {
-        // TODO: i > 9 => a,b,c
-        // maybe printf("%x\n", i);
-        return i.ToString();
+        ballHeldInHand = new Dictionary<uint, int>();
+        siteSwapList = new List<string>() { "-" };
+        currentBeat = 0;
+        beatLastCaughtMap = new Dictionary<int, int>();
+        controllerIdOfPreviousCatch = 0;
     }
 
-    private void SaveControllerId(uint id)
+    private void Expect(string expected, string result)
     {
-        if(firstController == 999)
+        if (expected == result)
         {
-            firstController = id;
+            Debug.Log("TEST PASSED: " + expected + " equalled " + result);
         } else
         {
-            if(firstController != id)
-            {
-                secondController = id;
-            }
+            Debug.LogError("TEST FAIL: Expected " + expected + " by received " + result);
         }
     }
-
-    private uint GetOtherControllerId(uint knownId)
-    {
-        if(knownId == firstController)
-        {
-            return secondController;
-        }
-
-        if (knownId == secondController)
-        {
-            return firstController;
-        }
-
-        Debug.LogWarning("knownId: " + knownId.ToString() + " not equal to " + firstController.ToString() + " or " + secondController.ToString());
-        return 999;
-    }
-
-    private void SetSiteSwapList(int index, string value)
-    {
-        // Debug.Log(index.ToString() + " " + siteSwapList.Count.ToString());
-        // This is some bullshit but I don't know the correct c# way to handle a list of unknown length
-
-        if (siteSwapList.Count < index)
-        {
-            for (int i = 0; i <= index - siteSwapList.Count; i++)
-            {
-                siteSwapList.Add("_");
-            }
-        }
-        siteSwapList.Add("_");
-        siteSwapList[index] = value;
-    }
-
-    public void OnCatch(uint controllerId, int ballId)
-    {
-        SaveControllerId(controllerId);
-        ballHeldInHand[controllerId] = ballId;
-
-        if (controllerIdOfPreviousCatch == controllerId)
-        {
-            // Debug.Log("Caught twice in same hand");
-            uint otherContollerId = GetOtherControllerId(controllerId);
-            // Debug.Log("otherContollerId " + otherContollerId.ToString());
-            // Debug.Log("ballHeldInHand[otherContollerId] " + ballHeldInHand[otherContollerId].ToString());
-            if (ballHeldInHand.TryGetValue(otherContollerId, out int heldBallId))
-            {
-                Catch(controllerId, heldBallId);
-            } else
-            {
-                SetSiteSwapList(currentBeat, "EMPTY");
-                currentBeat++;
-            }
-        }
-
-        Catch(controllerId, ballId);
-        controllerIdOfPreviousCatch = controllerId;
-        // text.UpdateText("SiteSwap: " + string.Join("", siteSwapList.ToArray()));
-    }
-
-    void Catch(uint controllerId, int ballId)
-    {
-        if (beatLastCaughtMap.TryGetValue(ballId, out int beatLastCaught))
-        {
-            var beatDifference = currentBeat - beatLastCaught;
-            SetSiteSwapList(beatLastCaught, IntToHex(beatDifference));
-        }
-
-        beatLastCaughtMap[ballId] = currentBeat;
-        currentBeat++;
-    }
-
-    public void OnThrow(uint controllerId, int ballId)
-    {
-        // beatLastThrownMap[ballId] = currentBeat;
-        // Debug.Log("OnThrow: Controller ID:" + controllerId + ". Ball ID " + ballId);
-    }
-
-    public void OldMethod(uint controllerIndex, int ballIndex)
-    {
-        Debug.Log(controllerIndex + ", " + ballIndex);
-        count++;
-
-        
-
-        if (map.ContainsKey(ballIndex))
-        {
-            if (controllerIndex == previousControllerIndex)
-            {
-                Debug.Log("Same hand, Old count: " + map[ballIndex] + ", current count " + count);
-                int siteswapForGrabbedBall = count - map[ballIndex];
-                siteswap = siteswap + siteswapForGrabbedBall.ToString();
-                map[ballIndex] = count;
-            }
-            else
-            {
-                previousControllerIndex = controllerIndex;
-                Debug.Log("Other hand, Old count: " + map[ballIndex] + ", current count " + count);
-                int siteswapForGrabbedBall = count - map[ballIndex];
-                siteswap = siteswap + siteswapForGrabbedBall.ToString();
-                map[ballIndex] = count;
-            }
-            
-
-        } else
-        {
-            map.Add(ballIndex, count);
-        }     
-
-        Debug.Log("SiteSwap: " + siteswap);
-    }
-
-    
 }

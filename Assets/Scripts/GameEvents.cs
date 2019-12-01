@@ -36,4 +36,10 @@ public class GameEvents : MonoBehaviour
     {
         OnCatch?.Invoke(controllerId, ballId);
     }
+
+    public event Action<uint, int> OnThrow;
+    public void Throw(uint controllerId, int ballId)
+    {
+        OnThrow?.Invoke(controllerId, ballId);
+    }
 }
