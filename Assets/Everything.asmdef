@@ -1,9 +1,6 @@
 {
-    "name": "Tests",
-    "references": [
-        "GUID:e44b97c7fca6a3842844575f409d4a57",
-        "GUID:1c16e035228391341a27db74098d53e7"
-    ],
+    "name": "Everything",
+    "references": [],
     "optionalUnityReferences": [
         "TestAssemblies"
     ],

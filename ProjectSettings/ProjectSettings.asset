@@ -13,7 +13,7 @@ PlayerSettings:
   useOnDemandResources: 0
   accelerometerFrequency: 60
   companyName: Owen Greenaway
-  productName: Juggling Simulator
+  productName: Virtual Juggling
   defaultCursor: {fileID: 0}
   cursorHotspot: {x: 0, y: 0}
   m_SplashScreenBackgroundColor: {r: 0.1882353, g: 0.5019608, b: 0.14509805, a: 1}
