@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using VRTK;
 
@@ -10,7 +11,8 @@ public class SiteSwaps : MonoBehaviour
     private Dictionary<int, int> beatLastCaughtMap = new Dictionary<int, int>();
     private uint controllerIdOfPreviousCatch;
     private Dictionary<uint, int> ballHeldInHand = new Dictionary<uint, int>();
-    public VRTK_ObjectTooltip text;
+    public VRTK_ObjectTooltip siteSwapText;
+    public VRTK_ObjectTooltip detectedSiteSwaptext;
 
     private void Start()
     {
@@ -80,7 +82,8 @@ public class SiteSwaps : MonoBehaviour
         // Tidy up
         controllerIdOfPreviousCatch = controllerId;
         // Render to screen
-        text.UpdateText("SiteSwap: " + string.Join("", siteSwapList.ToArray()));
+        siteSwapText.UpdateText("SiteSwap: " + string.Join("", siteSwapList.ToArray()));
+        detectedSiteSwaptext.UpdateText(DetectSiteSwap(string.Join("", siteSwapList.ToArray())));
     }
 
     void Catch(uint controllerId, int ballId)
@@ -105,51 +108,102 @@ public class SiteSwaps : MonoBehaviour
         ballHeldInHand.Remove(controllerId);
     }
 
-    private string DetectSiteSwap(string completeSiteSwap)
+    string LastCharacter(string s)
     {
-        string withoutUnderscores = completeSiteSwap.Split('_')[0];
-
-        string[] registeredSiteSwaps = new string[] { "53", "3" };
-
-        bool HasDetectedRegisteredSiteSwap = false;
-
-
-        string detectedSiteSwap = "";
-        int rounds = 0;
-
-        foreach(string registeredSiteSwap in registeredSiteSwaps)
-        {
-            if (!HasDetectedRegisteredSiteSwap)
-            {
-                rounds = TestSiteSwap(withoutUnderscores, registeredSiteSwap, 0);
-                if (rounds > 0)
-                {
-                    HasDetectedRegisteredSiteSwap = true;
-                    detectedSiteSwap = registeredSiteSwap;
-                }
-            }
-        }
-
-        return HasDetectedRegisteredSiteSwap ? rounds + " round of " + detectedSiteSwap : "No pattern detected";
+        return s[s.Length - 1].ToString();
     }
 
-    private int TestSiteSwap(string WholeSiteSwap, string validSiteSwap, int count)
+    string Trimmed(string s)
     {
-        if (WholeSiteSwap.EndsWith(validSiteSwap))
+        return s.Split('_')[0];
+    }
+
+    string Previous(string s, int i)
+    {
+        return s[i - 1].ToString();
+    }
+
+    string RemoveLastCharacter(string s)
+    {
+        return s.Remove(s.Length - 1);
+    }
+
+    string PreviousThrowInSiteSwap(string siteSwap, int indexOfCurrentThrow)
+    {
+        return indexOfCurrentThrow == 0 ? LastCharacter(siteSwap) : Previous(siteSwap, indexOfCurrentThrow);
+    }
+
+    int PreviousIndex(string siteSwap, int index)
+    {
+        return index == 0 ? siteSwap.Length - 1 : index - 1;
+    }
+
+    int WasPreviousThrowValid(string sequenceActuallyJuggled, string siteSwap, int indexOfCurrentThrow, int count)
+    {
+        // We know the last sequence is valid, now look at previous throws
+        string newSequence = RemoveLastCharacter(sequenceActuallyJuggled);
+
+        // If no previous catches then it's invalid
+        if (newSequence.Length == 0)
         {
-            var remainingSiteSwap = WholeSiteSwap.Substring(0, WholeSiteSwap.Length - validSiteSwap.Length);
-            return TestSiteSwap(remainingSiteSwap, validSiteSwap, count + 1);
+            return count;
         }
+
+        if (LastCharacter(newSequence) == siteSwap[PreviousIndex(siteSwap, indexOfCurrentThrow)].ToString())
+        {
+            return WasPreviousThrowValid(
+                    newSequence,
+                    siteSwap,
+                    PreviousIndex(siteSwap, indexOfCurrentThrow),
+                    count + 1
+            );
+        }
+
         return count;
+    }
+
+    int CountCatches(string siteSwap, string sequenceActuallyJuggled)
+    {
+
+        string lastThrow = LastCharacter(Trimmed(sequenceActuallyJuggled));
+
+        if (siteSwap.Contains(lastThrow))
+        {
+            return WasPreviousThrowValid(
+                Trimmed(sequenceActuallyJuggled),
+                siteSwap,
+                siteSwap.IndexOf(lastThrow),
+                1
+            );
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    private string DetectSiteSwap(string sequenceActuallyJuggled)
+    {
+        string[] registeredSiteSwaps = new string[] { "53", "3" };
+
+        string[] counts = registeredSiteSwaps.Select(registeredSiteSwap =>
+        {
+            return registeredSiteSwap + ": " + CountCatches(registeredSiteSwap, sequenceActuallyJuggled);
+        }
+        ).ToArray();
+
+        return string.Join(", ", counts);
     }
 
     private void Test()
     {
-        Expect("No pattern detected", DetectSiteSwap("1_"));
-        Expect("1 round of 3", DetectSiteSwap("3_"));
-        Expect("2 round of 3", DetectSiteSwap("33_"));
-        Expect("1 round of 53", DetectSiteSwap("53_"));
-        Expect("2 round of 53", DetectSiteSwap("5353_3"));
+        Expect("53: 1, 3: 1", DetectSiteSwap("3_"));
+        Expect("53: 1, 3: 2", DetectSiteSwap("33_"));
+        Expect("53: 1, 3: 3", DetectSiteSwap("333_"));
+        Expect("53: 1, 3: 3", DetectSiteSwap("4333_"));
+        Expect("53: 2, 3: 1", DetectSiteSwap("53_"));
+        Expect("53: 5, 3: 0", DetectSiteSwap("553535_"));
+        Expect("53: 5, 3: 1", DetectSiteSwap("5335353_"));
 
         uint left = 1;
         uint right = 2;
@@ -227,22 +281,20 @@ public class SiteSwaps : MonoBehaviour
             OnCatch(right, blue);
         }
 
-        SS423();
-        Expect("42342342342342342342342", string.Join("", siteSwapList.ToArray()));
-        Reset();
+        //SS423();
+        //Expect("42342342342342342342342", string.Join("", siteSwapList.ToArray()));
+        //Reset();
 
-        SS3();
-        Expect("333333_", string.Join("", siteSwapList.ToArray()));
-        Reset();
+        //SS3();
+        //Expect("333333_", string.Join("", siteSwapList.ToArray()));
+        //Reset();
 
-        SS531();
-        Expect("531", string.Join("", siteSwapList.ToArray()));
-        Reset();
+        //SS531();
+        //Expect("531", string.Join("", siteSwapList.ToArray()));
+        //Reset();
 
-        SS40();
-        Expect("4040404040404040_0_", string.Join("", siteSwapList.ToArray()));
-
-        
+        //SS40();
+        //Expect("4040404040404040_0_", string.Join("", siteSwapList.ToArray()));
     }
 
     // To reset unit tests
@@ -259,7 +311,7 @@ public class SiteSwaps : MonoBehaviour
     {
         if (expected == result)
         {
-            Debug.Log("TEST PASSED: '" + expected + "' equalled '" + result + "'");
+            Debug.Log("TEST PASSED: '" + expected + "'");
         } else
         {
             Debug.LogError("TEST FAIL: Expected '" + expected + "' by received '" + result + "'");
