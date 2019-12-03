@@ -2,6 +2,19 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+public class Record
+{
+    public Record(int catches = 0, float time = 0F)
+    {
+        Catches = catches;
+        Time = time;
+    }
+
+    public int Catches { get; set; }
+    public float Time { get; set; }
+
+}
+
 public class Timer : MonoBehaviour
 {
     public VRTK.VRTK_ObjectTooltip currentTimeText;
@@ -9,24 +22,25 @@ public class Timer : MonoBehaviour
 
     private int numberOfBalls = 3;
     private float currentTime = 0F;
+    private int currentCatches = 0;
     private bool isTimerRunning = false;
-    private Dictionary<int, float> records = new Dictionary<int, float>()
+    private Dictionary<int, Record> records = new Dictionary<int, Record>()
     {
-        { 1, 0F },
-        { 2, 0F },
-        { 3, 0F },
-        { 4, 0F },
-        { 5, 0F },
-        { 6, 0F },
-        { 7, 0F },
-        { 8, 0F },
-        { 9, 0F },
-        { 10, 0F },
-        { 11, 0F },
-        { 12, 0F },
-        { 13, 0F },
-        { 14, 0F },
-        { 15, 0F }
+        { 1,  new Record()},
+        { 2, new Record() },
+        { 3, new Record() },
+        { 4, new Record() },
+        { 5, new Record() },
+        { 6, new Record() },
+        { 7, new Record() },
+        { 8, new Record() },
+        { 9, new Record() },
+        { 10, new Record() },
+        { 11, new Record() },
+        { 12, new Record() },
+        { 13, new Record() },
+        { 14, new Record() },
+        { 15, new Record() }
     };
 
     private void Start()
@@ -34,6 +48,7 @@ public class Timer : MonoBehaviour
         GameEvents.current.OnNumberOfBallsChange += OnNumberOfBallsChange;
         GameEvents.current.OnDrop += StopTimer;
         GameEvents.current.OnLaunch += StartTimer;
+        GameEvents.current.OnCatch += Catch;
         SetCurrentTimeText();
         SetCurrentRecordText();
     }
@@ -42,6 +57,8 @@ public class Timer : MonoBehaviour
     {
         GameEvents.current.OnNumberOfBallsChange -= OnNumberOfBallsChange;
         GameEvents.current.OnDrop -= StopTimer;
+        GameEvents.current.OnLaunch -= StartTimer;
+        GameEvents.current.OnCatch -= Catch;
     }
 
     private void Update()
@@ -53,27 +70,41 @@ public class Timer : MonoBehaviour
         }
     }
 
+    private void Catch(uint controllerId, int ballId)
+    {
+        if (isTimerRunning)
+        {
+            currentCatches++;
+        }
+    }
+
     private float GetCurrentRecord()
     {
         // todo: throw error if not underfined
         // if undefined then return 0
-        return records[numberOfBalls];
+        return records[numberOfBalls].Time;
+    }
+
+    private int GetCurrentRecordCatches()
+    {
+        return records[numberOfBalls].Catches;
     }
 
     private void SetCurrentRecord(float newRecord)
     {
         // todo: if doesn't exist, create it
-        records[numberOfBalls] = newRecord;
+        records[numberOfBalls] = new Record(currentCatches, currentTime);
     }
+
 
     private void SetCurrentTimeText()
     {
-        currentTimeText.UpdateText(currentTime.ToString("F1"));
+        currentTimeText.UpdateText(currentCatches + "  " +currentTime.ToString("F1"));
     }
 
     private void SetCurrentRecordText()
     {
-        currentRecordText.UpdateText(numberOfBalls.ToString() + " ball record: " + GetCurrentRecord().ToString("F2"));
+        currentRecordText.UpdateText(numberOfBalls.ToString() + " ball record: " + GetCurrentRecordCatches() + "  " + GetCurrentRecord().ToString("F2"));
     }
 
     private void OnNumberOfBallsChange(int newNumberOfBalls)
@@ -97,6 +128,7 @@ public class Timer : MonoBehaviour
             }
         }
         isTimerRunning = true;
+        currentCatches = 0;
         currentTime = 0F;
         SetCurrentTimeText();
         SetCurrentRecordText();
