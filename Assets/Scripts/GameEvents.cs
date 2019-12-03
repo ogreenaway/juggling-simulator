@@ -5,7 +5,6 @@ using UnityEngine;
 
 public class GameEvents : MonoBehaviour
 {
-    public int owen;
     public static GameEvents current;
 
     private void Awake()
@@ -41,5 +40,11 @@ public class GameEvents : MonoBehaviour
     public void Throw(uint controllerId, int ballId)
     {
         OnThrow?.Invoke(controllerId, ballId);
+    }
+
+    public event Action<int, Material> OnPaint;
+    public void Paint(int ballIndex, Material material)
+    {
+        OnPaint?.Invoke(ballIndex, material);
     }
 }

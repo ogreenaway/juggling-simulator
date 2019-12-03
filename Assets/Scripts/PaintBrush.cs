@@ -5,43 +5,40 @@ using UnityEngine;
 public class PaintBrush : MonoBehaviour
 {
     public GameObject[] fakeJugglingBalls = new GameObject[0];
-    public Props props;
     public Renderer bristles;
 
     private void Start()
     {
+        fakeJugglingBalls = GameObject.FindGameObjectsWithTag("FakeProp");
         GameEvents.current.OnNumberOfBallsChange += DisplayBalls;
+        GameEvents.current.OnPaint += Paint;
     }
 
     private void OnDestroy()
     {
         GameEvents.current.OnNumberOfBallsChange -= DisplayBalls;
+        GameEvents.current.OnPaint -= Paint;
     }
 
-    private void ColourRealAndFakeProps(int index, Material material)
+    private void Paint(int ballIndex, Material material)
     {
-        fakeJugglingBalls[index].GetComponent<Renderer>().material = material;
-        props.balls[index].GetComponent<Renderer>().material = material;
+        fakeJugglingBalls[ballIndex].GetComponent<Renderer>().material = material;
     }
 
     private void OnTriggerEnter(Collider collider)
     {
-        string tag = collider.gameObject.tag;
         Renderer colliderRenderer = collider.gameObject.GetComponent<Renderer>();
 
-        switch (tag)
+        switch (collider.gameObject.tag)
         {
             case "Paint":
                 bristles.material = colliderRenderer.material;
                 break;
             case "FakeProp":
-                int fakePropIndex = System.Array.IndexOf(fakeJugglingBalls, collider.gameObject);
-                ColourRealAndFakeProps(fakePropIndex, bristles.material);
+                GameEvents.current.Paint(collider.gameObject.transform.GetSiblingIndex(), bristles.material);
                 break;
             case "Prop":
-                // todo: remove dependency on props
-                int realPropIndex = System.Array.IndexOf(props.balls, collider.gameObject);
-                ColourRealAndFakeProps(realPropIndex, bristles.material);
+                GameEvents.current.Paint(collider.gameObject.transform.GetSiblingIndex(), bristles.material);
                 break;
             default:                
                 if (colliderRenderer)

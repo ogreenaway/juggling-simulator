@@ -16,6 +16,13 @@ public class Props : MonoBehaviour
         {
             ball.SetActive(false);
         }
+
+        GameEvents.current.OnPaint += Paint;
+    }
+
+    private void OnDestroy()
+    {
+        GameEvents.current.OnPaint -= Paint;
     }
 
     public void SetRadius(float radius)
@@ -55,5 +62,10 @@ public class Props : MonoBehaviour
         {
             ball.GetComponent<TrailRenderer>().time = duration;
         }
+    }
+
+    private void Paint(int ballIndex, Material material)
+    {
+        balls[ballIndex].GetComponent<Renderer>().material = material;
     }
 }

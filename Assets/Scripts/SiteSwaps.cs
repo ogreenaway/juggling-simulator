@@ -13,13 +13,17 @@ public class SiteSwaps : MonoBehaviour
     private Dictionary<uint, int> ballHeldInHand = new Dictionary<uint, int>();
     public VRTK_ObjectTooltip siteSwapText;
     public VRTK_ObjectTooltip detectedSiteSwaptext;
+    public bool test = false;
 
     private void Start()
     {
         GameEvents.current.OnLaunch += Reset;
         GameEvents.current.OnCatch += OnCatch;
         GameEvents.current.OnThrow += OnThrow;
-        Test();
+        if (test)
+        {
+            Test();
+        }
     }
 
     private void OnDestroy()
@@ -184,7 +188,7 @@ public class SiteSwaps : MonoBehaviour
 
     private string DetectSiteSwap(string sequenceActuallyJuggled)
     {
-        string[] registeredSiteSwaps = new string[] { "53", "3" };
+        string[] registeredSiteSwaps = new string[] { "53", "3", "7", "423" };
 
         string[] counts = registeredSiteSwaps.Select(registeredSiteSwap =>
         {

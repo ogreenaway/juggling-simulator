@@ -76,13 +76,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a0e736be44bad0c49b87377a75725f97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  controllable: {fileID: 7638004297584318338}
-  valueText: {fileID: 6948105176851898763}
   onChange:
     m_PersistentCalls:
       m_Calls: []
     m_TypeName: UnityEventWithFloat, Assembly-CSharp, Version=0.0.0.0, Culture=neutral,
       PublicKeyToken=null
+  controllable: {fileID: 7638004297584318338}
+  valueText: {fileID: 6948105176851898763}
+  shouldUpdateText: 1
   textFormat: F2
 --- !u!1 &1808417206539765064
 GameObject:
@@ -97,6 +98,7 @@ GameObject:
   - component: {fileID: 6865639194851212693}
   - component: {fileID: 64040548790898292}
   - component: {fileID: 6048644732564124648}
+  - component: {fileID: 6477709420445956474}
   m_Layer: 0
   m_Name: SliderControl
   m_TagString: Untagged
@@ -113,7 +115,7 @@ Transform:
   m_GameObject: {fileID: 1808417206539765064}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 0.05, y: 0.05, z: 0.05}
+  m_LocalScale: {x: 0.09, y: 0.09, z: 0.09}
   m_Children: []
   m_Father: {fileID: 7489567144487837180}
   m_RootOrder: 0
@@ -211,6 +213,26 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.50000024
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &6477709420445956474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1808417206539765064}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abc4b5dd2be1cea4aaea2850b910d3f9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  nearTouchHighlight: {r: 0, g: 0, b: 0, a: 0}
+  touchHighlight: {r: 0.14901961, g: 0.4, b: 0.11372549, a: 1}
+  grabHighlight: {r: 0, g: 0, b: 0, a: 0}
+  useHighlight: {r: 0, g: 0, b: 0, a: 0}
+  objectToMonitor: {fileID: 0}
+  objectToHighlight: {fileID: 0}
+  objectHighlighter: {fileID: 0}
+  objectToAffect: {fileID: 0}
 --- !u!1 &2775192692762980526
 GameObject:
   m_ObjectHideFlags: 0
@@ -528,6 +550,46 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
+      propertyPath: displayText
+      value: Tooltip
+      objectReference: {fileID: 0}
+    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
+      propertyPath: fontSize
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
+      propertyPath: containerSize.x
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
+      propertyPath: containerSize.y
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
+      propertyPath: lineWidth
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
+      propertyPath: fontColor.r
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
+      propertyPath: fontColor.g
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
+      propertyPath: fontColor.b
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
+      propertyPath: containerColor.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
+      propertyPath: lineColor.a
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 441652, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
       propertyPath: m_RootOrder
       value: 3
@@ -576,46 +638,6 @@ PrefabInstance:
       propertyPath: m_SizeDelta.y
       value: 16.5
       objectReference: {fileID: 0}
-    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
-      propertyPath: displayText
-      value: Tooltip
-      objectReference: {fileID: 0}
-    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
-      propertyPath: fontSize
-      value: 40
-      objectReference: {fileID: 0}
-    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
-      propertyPath: containerSize.x
-      value: 500
-      objectReference: {fileID: 0}
-    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
-      propertyPath: containerSize.y
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
-      propertyPath: lineWidth
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
-      propertyPath: fontColor.r
-      value: 0.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
-      propertyPath: fontColor.g
-      value: 0.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
-      propertyPath: fontColor.b
-      value: 0.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
-      propertyPath: containerColor.a
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
-      propertyPath: lineColor.a
-      value: 0
-      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
 --- !u!4 &6948105176861848483 stripped
@@ -646,6 +668,54 @@ PrefabInstance:
     - target: {fileID: 182086, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
       propertyPath: m_Name
       value: Label
+      objectReference: {fileID: 0}
+    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
+      propertyPath: fontSize
+      value: 60
+      objectReference: {fileID: 0}
+    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
+      propertyPath: displayText
+      value: Gravity
+      objectReference: {fileID: 0}
+    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
+      propertyPath: drawLineFrom
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
+      propertyPath: containerSize.x
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
+      propertyPath: containerSize.y
+      value: 100
+      objectReference: {fileID: 0}
+    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
+      propertyPath: drawLineTo
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
+      propertyPath: lineColor.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
+      propertyPath: containerColor.a
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
+      propertyPath: lineWidth
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
+      propertyPath: fontColor.r
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
+      propertyPath: fontColor.g
+      value: 0.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
+      propertyPath: fontColor.b
+      value: 0.4
       objectReference: {fileID: 0}
     - target: {fileID: 441652, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -706,54 +776,6 @@ PrefabInstance:
     - target: {fileID: 22412712, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
       propertyPath: m_SizeDelta.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
-      propertyPath: fontSize
-      value: 60
-      objectReference: {fileID: 0}
-    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
-      propertyPath: displayText
-      value: Gravity
-      objectReference: {fileID: 0}
-    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
-      propertyPath: drawLineFrom
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
-      propertyPath: containerSize.x
-      value: 500
-      objectReference: {fileID: 0}
-    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
-      propertyPath: containerSize.y
-      value: 100
-      objectReference: {fileID: 0}
-    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
-      propertyPath: drawLineTo
-      value: 
-      objectReference: {fileID: 0}
-    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
-      propertyPath: lineColor.a
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
-      propertyPath: containerColor.a
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
-      propertyPath: lineWidth
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
-      propertyPath: fontColor.r
-      value: 0.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
-      propertyPath: fontColor.g
-      value: 0.4
-      objectReference: {fileID: 0}
-    - target: {fileID: 11464476, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
-      propertyPath: fontColor.b
-      value: 0.4
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9ab61c80dfd411f4c86b8553b0c42cf1, type: 3}
