@@ -6,6 +6,7 @@ using VRTK;
 
 public class SiteSwaps : MonoBehaviour
 {
+    private int numberOfBalls = 3;
     private List<string> siteSwapList = new List<string>() { "_" };
     private int currentBeat = 0;
     private Dictionary<int, int> beatLastCaughtMap = new Dictionary<int, int>();
@@ -20,6 +21,7 @@ public class SiteSwaps : MonoBehaviour
         GameEvents.current.OnLaunch += Reset;
         GameEvents.current.OnCatch += OnCatch;
         GameEvents.current.OnThrow += OnThrow;
+        GameEvents.current.OnNumberOfBallsChange += OnNumberOfBallsChange;
         if (test)
         {
             Test();
@@ -31,6 +33,13 @@ public class SiteSwaps : MonoBehaviour
         GameEvents.current.OnLaunch -= Reset;
         GameEvents.current.OnCatch -= OnCatch;
         GameEvents.current.OnThrow -= OnThrow;
+        GameEvents.current.OnNumberOfBallsChange -= OnNumberOfBallsChange;
+    }
+
+    private void OnNumberOfBallsChange(int n)
+    {
+        numberOfBalls = n;
+        Reset();
     }
 
     private string IntToHex(int i)
@@ -85,7 +94,11 @@ public class SiteSwaps : MonoBehaviour
         Catch(controllerId, ballId);
         // Tidy up
         controllerIdOfPreviousCatch = controllerId;
-        // Render to screen
+        Render();
+    }
+
+    private void Render()
+    {
         siteSwapText.UpdateText("..." + string.Join("", siteSwapList.ToArray().Skip(Math.Max(0, siteSwapList.Count() - 10)).Take(10)));
         detectedSiteSwaptext.UpdateText(DetectSiteSwap(string.Join("", siteSwapList.ToArray())));
     }
@@ -168,6 +181,7 @@ public class SiteSwaps : MonoBehaviour
 
     int CountCatches(string siteSwap, string sequenceActuallyJuggled)
     {
+        if (Trimmed(sequenceActuallyJuggled).Length == 0) return 0;
 
         string lastThrow = LastCharacter(Trimmed(sequenceActuallyJuggled));
 
@@ -188,7 +202,26 @@ public class SiteSwaps : MonoBehaviour
 
     private string DetectSiteSwap(string sequenceActuallyJuggled)
     {
-        string[] registeredSiteSwaps = new string[] { "53", "3", "7", "423" };
+        Dictionary<int, string[]> registeredSiteSwapsMap = new Dictionary<int, string[]>()
+        {
+            { 1,  new string[] { "1" }},
+            { 2, new string[] { "31", "40" } },
+            { 3, new string[] { "3", "423", "531", "51" } },
+            { 4, new string[] { "4", "53", "534", "71" } },
+            { 5, new string[] { "5", "645", "744", "91" } },
+            { 6, new string[] { "6", "75", "9555" } },
+            { 7, new string[] { "7" } },
+            { 8, new string[] { "8" } },
+            { 9, new string[] { "9" } },
+            { 10, new string[] { "a" } },
+            { 11, new string[] { "b" } },
+            { 12, new string[] { "c" } },
+            { 13, new string[] { "d" } },
+            { 14, new string[] { "e" } },
+            { 15, new string[] { "f" } }
+        };
+
+        string[]  registeredSiteSwaps = registeredSiteSwapsMap[numberOfBalls];
 
         string[] counts = registeredSiteSwaps.Select(registeredSiteSwap =>
         {
@@ -305,10 +338,11 @@ public class SiteSwaps : MonoBehaviour
     private void Reset()
     {
         ballHeldInHand = new Dictionary<uint, int>();
-        siteSwapList = new List<string>() { "-" };
+        siteSwapList = new List<string>() { "_" };
         currentBeat = 0;
         beatLastCaughtMap = new Dictionary<int, int>();
         controllerIdOfPreviousCatch = 0;
+        Render();
     }
 
     private void Expect(string expected, string result)
