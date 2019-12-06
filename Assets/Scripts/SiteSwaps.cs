@@ -86,7 +86,7 @@ public class SiteSwaps : MonoBehaviour
         // Tidy up
         controllerIdOfPreviousCatch = controllerId;
         // Render to screen
-        siteSwapText.UpdateText("SiteSwap: " + string.Join("", siteSwapList.ToArray()));
+        siteSwapText.UpdateText("..." + string.Join("", siteSwapList.ToArray().Skip(Math.Max(0, siteSwapList.Count() - 10)).Take(10)));
         detectedSiteSwaptext.UpdateText(DetectSiteSwap(string.Join("", siteSwapList.ToArray())));
     }
 
@@ -196,7 +196,7 @@ public class SiteSwaps : MonoBehaviour
         }
         ).ToArray();
 
-        return string.Join(", ", counts);
+        return string.Join(" " + Environment.NewLine + " ", counts);
     }
 
     private void Test()

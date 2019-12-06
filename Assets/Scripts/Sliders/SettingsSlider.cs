@@ -3,21 +3,18 @@
 public class SettingsSlider : MonoBehaviour
 {
     public VRTK.VRTK_ObjectTooltip valueText;
-    public GameObject ballSettings;
-    public GameObject launcherSettings;
+    public GameObject fullGameMode;
 
     public void OnChange(float value)
     {
         if(value > 0.5F)
         {
-            ballSettings.transform.position = new Vector3(0, 1, 0);
-            launcherSettings.transform.position = new Vector3(0, 1, 0);
-            valueText.UpdateText("on");
+            fullGameMode.transform.position = new Vector3(0, 1, 0);
+            valueText.UpdateText("full game");
         } else
         {
-            ballSettings.transform.position = new Vector3(0, -2, 0);
-            launcherSettings.transform.position = new Vector3(0, -2, 0);
-            valueText.UpdateText("off");
+            fullGameMode.transform.position = new Vector3(0, -2, 0);
+            valueText.UpdateText("party mode");
         }
     }
 }
