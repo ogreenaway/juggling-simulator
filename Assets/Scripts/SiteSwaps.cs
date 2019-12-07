@@ -4,6 +4,21 @@ using System.Linq;
 using UnityEngine;
 using VRTK;
 
+public class SiteSwap
+{
+    public SiteSwap(string name)
+    {
+        Name = name;
+        Record = 0;
+        CurrentCatches = 0;
+    }
+
+    public string Name { get; set; }
+    public int Record { get; set; }
+    public int CurrentCatches { get; set; }
+
+}
+
 public class SiteSwaps : MonoBehaviour
 {
     private int numberOfBalls = 3;
@@ -15,6 +30,25 @@ public class SiteSwaps : MonoBehaviour
     public VRTK_ObjectTooltip siteSwapText;
     public VRTK_ObjectTooltip detectedSiteSwaptext;
     public bool test = false;
+
+    private Dictionary<int, SiteSwap[]> registeredSiteSwapsMap = new Dictionary<int, SiteSwap[]>()
+        {
+            { 1,  new SiteSwap[] { new SiteSwap("1") }},
+            { 2, new SiteSwap[] { new SiteSwap("31"),  new SiteSwap("40") } },
+            { 3, new SiteSwap[] { new SiteSwap("3"),  new SiteSwap("423"),  new SiteSwap("531"),  new SiteSwap("51") } },
+            { 4, new SiteSwap[] { new SiteSwap("4"),  new SiteSwap("53"),  new SiteSwap("534"),  new SiteSwap("71") } },
+            { 5, new SiteSwap[] { new SiteSwap("5"),  new SiteSwap("645"),  new SiteSwap("744"),  new SiteSwap("91") } },
+            { 6, new SiteSwap[] { new SiteSwap("6"),  new SiteSwap("75"),  new SiteSwap("9555") } },
+            { 7, new SiteSwap[] { new SiteSwap("7") } },
+            { 8, new SiteSwap[] { new SiteSwap("8") } },
+            { 9, new SiteSwap[] { new SiteSwap("9") } },
+            { 10, new SiteSwap[] { new SiteSwap("a") } },
+            { 11, new SiteSwap[] { new SiteSwap("b") } },
+            { 12, new SiteSwap[] { new SiteSwap("c") } },
+            { 13, new SiteSwap[] { new SiteSwap("d") } },
+            { 14, new SiteSwap[] { new SiteSwap("e") } },
+            { 15, new SiteSwap[] { new SiteSwap("f") } }
+        };
 
     private void Start()
     {
@@ -36,18 +70,87 @@ public class SiteSwaps : MonoBehaviour
         GameEvents.current.OnNumberOfBallsChange -= OnNumberOfBallsChange;
     }
 
+    private void Render()
+    {
+        siteSwapText.UpdateText("..." + string.Join("", siteSwapList.ToArray().Skip(Math.Max(0, siteSwapList.Count() - 10)).Take(10)));
+
+        DetectSiteSwap(string.Join("", siteSwapList.ToArray()));
+
+        // TODO: DetectSiteSwap returns a string
+        // TODO: DetectSiteSwap takes a list
+
+        SiteSwap[] registeredSiteSwaps = registeredSiteSwapsMap[numberOfBalls];
+
+        string detectedSiteSwaps = "";
+
+        foreach (SiteSwap registeredSiteSwap in registeredSiteSwaps)
+        {
+            detectedSiteSwaps += registeredSiteSwap.Name + " " + registeredSiteSwap.Record + " " + registeredSiteSwap.CurrentCatches + Environment.NewLine;
+        }
+
+        detectedSiteSwaptext.UpdateText(detectedSiteSwaps);
+    }
+
+    // GameEvents
+    // ===========================================
+
+    private void Reset()
+    {
+        ballHeldInHand = new Dictionary<uint, int>();
+        siteSwapList = new List<string>() { "_" };
+        currentBeat = 0;
+        beatLastCaughtMap = new Dictionary<int, int>();
+        controllerIdOfPreviousCatch = 0;
+        Render();
+    }
+
+    public void OnCatch(uint controllerId, int ballId)
+    {
+        ballHeldInHand[controllerId] = ballId;
+
+        // If you catch twice from the same hand then either a 2 or 0 just happened
+        if (controllerIdOfPreviousCatch == controllerId)
+        {
+            // The controllerIds are hardcoded to 1 and 2
+            uint otherContollerId = controllerId == 1 ? 2 : (uint)1;
+            // Find out if the other hand is holding a ball
+            if (ballHeldInHand.TryGetValue(otherContollerId, out int heldBallId))
+            {
+                // A 2 is effectively a held catch
+                Catch(controllerId, heldBallId);
+            }
+            else
+            {
+                // Not much to do for a 0
+                SetSiteSwapList(currentBeat, "0");
+                currentBeat++;
+            }
+        }
+
+        // We've already dealt with the 0 or 2 before this catch so now deal with this catch
+        Catch(controllerId, ballId);
+        // Tidy up
+        controllerIdOfPreviousCatch = controllerId;
+        Render();
+    }
+
+    private void OnThrow(uint controllerId, int ballId)
+    {
+        if (ballHeldInHand[controllerId] != ballId)
+        {
+            Debug.LogError("BUG: Somehow threw ball " + ballId + " from hand holding " + ballHeldInHand[controllerId]);
+        }
+        ballHeldInHand.Remove(controllerId);
+    }
+
     private void OnNumberOfBallsChange(int n)
     {
         numberOfBalls = n;
         Reset();
     }
 
-    private string IntToHex(int i)
-    {
-        // TODO: i > 9 => a,b,c
-        // maybe printf("%x\n", i);
-        return i.ToString();
-    }
+    // Create siteSwaps
+    // ===========================================
 
     private void SetSiteSwapList(int index, string value)
     {
@@ -68,41 +171,6 @@ public class SiteSwaps : MonoBehaviour
         siteSwapList[index] = value;   
     }
 
-    public void OnCatch(uint controllerId, int ballId)
-    {
-        ballHeldInHand[controllerId] = ballId;
-
-        // If you catch twice from the same hand then either a 2 or 0 just happened
-        if (controllerIdOfPreviousCatch == controllerId)
-        {
-            // The controllerIds are hardcoded to 1 and 2
-            uint otherContollerId = controllerId == 1 ? 2 : (uint)1;
-            // Find out if the other hand is holding a ball
-            if (ballHeldInHand.TryGetValue(otherContollerId, out int heldBallId))
-            {
-                // A 2 is effectively a held catch
-                Catch(controllerId, heldBallId);
-            } else
-            {
-                // Not much to do for a 0
-                SetSiteSwapList(currentBeat, "0");
-                currentBeat++;
-            }
-        }
-
-        // We've already dealt with the 0 or 2 before this catch so now deal with this catch
-        Catch(controllerId, ballId);
-        // Tidy up
-        controllerIdOfPreviousCatch = controllerId;
-        Render();
-    }
-
-    private void Render()
-    {
-        siteSwapText.UpdateText("..." + string.Join("", siteSwapList.ToArray().Skip(Math.Max(0, siteSwapList.Count() - 10)).Take(10)));
-        detectedSiteSwaptext.UpdateText(DetectSiteSwap(string.Join("", siteSwapList.ToArray())));
-    }
-
     void Catch(uint controllerId, int ballId)
     {
         if (beatLastCaughtMap.TryGetValue(ballId, out int beatLastCaught))
@@ -116,43 +184,43 @@ public class SiteSwaps : MonoBehaviour
         currentBeat++;
     }
 
-    private void OnThrow(uint controllerId, int ballId)
+    // Detect siteSwaps
+    // ===========================================
+
+    private void DetectSiteSwap(string sequenceActuallyJuggled)
     {
-        if (ballHeldInHand[controllerId] != ballId)
+        SiteSwap[] registeredSiteSwaps = registeredSiteSwapsMap[numberOfBalls];
+
+        foreach(SiteSwap registeredSiteSwap in registeredSiteSwaps)
         {
-            Debug.LogError("BUG: Somehow threw ball " + ballId + " from hand holding " + ballHeldInHand[controllerId]);
+            registeredSiteSwap.CurrentCatches = CountCatches(registeredSiteSwap.Name, sequenceActuallyJuggled);
+
+            if (registeredSiteSwap.CurrentCatches > registeredSiteSwap.Record)
+            {
+                registeredSiteSwap.Record = registeredSiteSwap.CurrentCatches;
+            }
         }
-        ballHeldInHand.Remove(controllerId);
     }
 
-    string LastCharacter(string s)
+    int CountCatches(string siteSwap, string sequenceActuallyJuggled)
     {
-        return s[s.Length - 1].ToString();
-    }
+        if (Trimmed(sequenceActuallyJuggled).Length == 0) return 0;
 
-    string Trimmed(string s)
-    {
-        return s.Split('_')[0];
-    }
+        string lastThrow = LastCharacter(Trimmed(sequenceActuallyJuggled));
 
-    string Previous(string s, int i)
-    {
-        return s[i - 1].ToString();
-    }
-
-    string RemoveLastCharacter(string s)
-    {
-        return s.Remove(s.Length - 1);
-    }
-
-    string PreviousThrowInSiteSwap(string siteSwap, int indexOfCurrentThrow)
-    {
-        return indexOfCurrentThrow == 0 ? LastCharacter(siteSwap) : Previous(siteSwap, indexOfCurrentThrow);
-    }
-
-    int PreviousIndex(string siteSwap, int index)
-    {
-        return index == 0 ? siteSwap.Length - 1 : index - 1;
+        if (siteSwap.Contains(lastThrow))
+        {
+            return WasPreviousThrowValid(
+                Trimmed(sequenceActuallyJuggled),
+                siteSwap,
+                siteSwap.IndexOf(lastThrow),
+                1
+            );
+        }
+        else
+        {
+            return 0;
+        }
     }
 
     int WasPreviousThrowValid(string sequenceActuallyJuggled, string siteSwap, int indexOfCurrentThrow, int count)
@@ -179,68 +247,58 @@ public class SiteSwaps : MonoBehaviour
         return count;
     }
 
-    int CountCatches(string siteSwap, string sequenceActuallyJuggled)
+    string PreviousThrowInSiteSwap(string siteSwap, int indexOfCurrentThrow)
     {
-        if (Trimmed(sequenceActuallyJuggled).Length == 0) return 0;
-
-        string lastThrow = LastCharacter(Trimmed(sequenceActuallyJuggled));
-
-        if (siteSwap.Contains(lastThrow))
-        {
-            return WasPreviousThrowValid(
-                Trimmed(sequenceActuallyJuggled),
-                siteSwap,
-                siteSwap.IndexOf(lastThrow),
-                1
-            );
-        }
-        else
-        {
-            return 0;
-        }
+        return indexOfCurrentThrow == 0 ? LastCharacter(siteSwap) : Previous(siteSwap, indexOfCurrentThrow);
     }
 
-    private string DetectSiteSwap(string sequenceActuallyJuggled)
+    int PreviousIndex(string siteSwap, int index)
     {
-        Dictionary<int, string[]> registeredSiteSwapsMap = new Dictionary<int, string[]>()
-        {
-            { 1,  new string[] { "1" }},
-            { 2, new string[] { "31", "40" } },
-            { 3, new string[] { "3", "423", "531", "51" } },
-            { 4, new string[] { "4", "53", "534", "71" } },
-            { 5, new string[] { "5", "645", "744", "91" } },
-            { 6, new string[] { "6", "75", "9555" } },
-            { 7, new string[] { "7" } },
-            { 8, new string[] { "8" } },
-            { 9, new string[] { "9" } },
-            { 10, new string[] { "a" } },
-            { 11, new string[] { "b" } },
-            { 12, new string[] { "c" } },
-            { 13, new string[] { "d" } },
-            { 14, new string[] { "e" } },
-            { 15, new string[] { "f" } }
-        };
-
-        string[]  registeredSiteSwaps = registeredSiteSwapsMap[numberOfBalls];
-
-        string[] counts = registeredSiteSwaps.Select(registeredSiteSwap =>
-        {
-            return registeredSiteSwap + ": " + CountCatches(registeredSiteSwap, sequenceActuallyJuggled);
-        }
-        ).ToArray();
-
-        return string.Join(" " + Environment.NewLine + " ", counts);
+        return index == 0 ? siteSwap.Length - 1 : index - 1;
     }
+
+    // Utils
+    // ===========================================
+
+    private string IntToHex(int i)
+    {
+        // TODO: i > 9 => a,b,c
+        // maybe printf("%x\n", i);
+        return i.ToString();
+    }
+
+    string LastCharacter(string s)
+    {
+        return s[s.Length - 1].ToString();
+    }
+
+    string Trimmed(string s)
+    {
+        return s.Split('_')[0];
+    }
+
+    string Previous(string s, int i)
+    {
+        return s[i - 1].ToString();
+    }
+
+    string RemoveLastCharacter(string s)
+    {
+        return s.Remove(s.Length - 1);
+    }
+
+    // Testing
+    // ===========================================
 
     private void Test()
     {
-        Expect("53: 1, 3: 1", DetectSiteSwap("3_"));
-        Expect("53: 1, 3: 2", DetectSiteSwap("33_"));
-        Expect("53: 1, 3: 3", DetectSiteSwap("333_"));
-        Expect("53: 1, 3: 3", DetectSiteSwap("4333_"));
-        Expect("53: 2, 3: 1", DetectSiteSwap("53_"));
-        Expect("53: 5, 3: 0", DetectSiteSwap("553535_"));
-        Expect("53: 5, 3: 1", DetectSiteSwap("5335353_"));
+        //Expect("53: 1, 3: 1", DetectSiteSwap("3_"));
+        //Expect("53: 1, 3: 2", DetectSiteSwap("33_"));
+        //Expect("53: 1, 3: 3", DetectSiteSwap("333_"));
+        //Expect("53: 1, 3: 3", DetectSiteSwap("4333_"));
+        //Expect("53: 2, 3: 1", DetectSiteSwap("53_"));
+        //Expect("53: 5, 3: 0", DetectSiteSwap("553535_"));
+        //Expect("53: 5, 3: 1", DetectSiteSwap("5335353_"));
 
         uint left = 1;
         uint right = 2;
@@ -334,16 +392,6 @@ public class SiteSwaps : MonoBehaviour
         //Expect("4040404040404040_0_", string.Join("", siteSwapList.ToArray()));
     }
 
-    // To reset unit tests
-    private void Reset()
-    {
-        ballHeldInHand = new Dictionary<uint, int>();
-        siteSwapList = new List<string>() { "_" };
-        currentBeat = 0;
-        beatLastCaughtMap = new Dictionary<int, int>();
-        controllerIdOfPreviousCatch = 0;
-        Render();
-    }
 
     private void Expect(string expected, string result)
     {
