@@ -35,8 +35,6 @@ public class PaintBrush : MonoBehaviour
                 bristles.material = colliderRenderer.material;
                 break;
             case "FakeProp":
-                GameEvents.current.Paint(collider.gameObject.transform.GetSiblingIndex(), bristles.material);
-                break;
             case "Prop":
                 GameEvents.current.Paint(collider.gameObject.transform.GetSiblingIndex(), bristles.material);
                 break;

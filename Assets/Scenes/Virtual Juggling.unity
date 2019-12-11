@@ -3769,7 +3769,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &587475394
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -7178,7 +7178,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b2b75444717c1f842ad073909fd9a157, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  runTests: 1
+  runTests: 0
   gameModeSlider: {fileID: 272294567}
   gravitySlider: {fileID: 802995839}
   numberOfBallsText: {fileID: 575597413}

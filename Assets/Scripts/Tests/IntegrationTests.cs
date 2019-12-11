@@ -34,7 +34,6 @@ public class IntegrationTests : MonoBehaviour
     private readonly float defaultColliderRadius = 0.5F;
     private readonly string defaultRecord = "3 ball record: 0 catches 0.00s";
 
-
     void Start()
     {
         if (runTests)
@@ -47,6 +46,7 @@ public class IntegrationTests : MonoBehaviour
     {
         // Don't launch into the floor
         rightHandControllerAlias.transform.position = new Vector3(0,3,0);
+
         // Wait for scene to load
         yield return null;
         yield return null;
@@ -152,6 +152,8 @@ public class IntegrationTests : MonoBehaviour
         Test("The correct real prop is painted", redMaterial, GameObject.FindGameObjectsWithTag("Prop")[1].GetComponent<Renderer>().sharedMaterial);
         Test("Other fake props are uneffected", defaultMaterial, GameObject.FindGameObjectsWithTag("FakeProp")[0].GetComponent<Renderer>().sharedMaterial);
         Test("Other real props are uneffected", defaultMaterial, GameObject.FindGameObjectsWithTag("Prop")[0].GetComponent<Renderer>().sharedMaterial);
+        Test("The correct real prop's trail is painted", redMaterial.color, GameObject.FindGameObjectsWithTag("Prop")[1].GetComponent<TrailRenderer>().startColor);
+        Test("The correct real prop's trail is painted", redMaterial.color, GameObject.FindGameObjectsWithTag("Prop")[1].GetComponent<TrailRenderer>().endColor);
     }
 
     private void TestGameModeSlider()
