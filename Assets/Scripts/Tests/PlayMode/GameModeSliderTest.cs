@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
@@ -11,7 +10,7 @@ namespace Tests
         [UnityTest]
         public IEnumerator Displays_and_hides_the_full_game_UI_panels()
         {
-            yield return new TestUtils().LoadScene();
+            yield return TestUtils.LoadScene();
             GameObject.Find("Game mode slider").GetComponent<SettingsSlider>().OnChange(1);
             Assert.AreEqual(1, GameObject.Find("Full game mode").transform.position.y, "If value is 1, the full game section is visible");
             Assert.AreEqual("Full game", GameObject.Find("Game mode text").GetComponent<VRTK.VRTK_ObjectTooltip>().displayText, "If value is 1, the text is 'Full Game'");

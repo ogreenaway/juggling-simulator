@@ -1,23 +1,11 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using NUnit.Framework;
-using UnityEditor.PackageManager;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using UnityEngine.TestTools;
 using VRTK;
 
 namespace Tests
 {
-    public class TestUtils
-    {
-        public IEnumerator LoadScene()
-        {
-            SceneManager.LoadScene("Virtual Juggling");
-            yield return new WaitForSeconds(0.1f);
-        }
-    }
-
     public class Integration
     {
         private readonly float defaultGravityFloat = 2.5F;
@@ -27,27 +15,17 @@ namespace Tests
         private readonly float defaultColliderRadius = 0.5F;
         private readonly string defaultRecord = "3 ball record: 0 catches 0.00s";
 
-        //IEnumerator LoadLevel()
-        //{
-        //    AsyncOperation asyncLoadLevel = SceneManager.LoadSceneAsync("Virtual Juggling", LoadSceneMode.Single);
-        //    while (!asyncLoadLevel.isDone)
-        //    {
-        //        // yield return null;
-        //        yield return new WaitForSeconds(0.1f);
-        //    }
-        //}
-
         [UnityTest]
         public IEnumerator At_the_start_of_the_game()
         {
-            yield return new TestUtils().LoadScene();
+            yield return TestUtils.LoadScene();
             Assert.AreEqual(0, GameObject.FindGameObjectsWithTag("Prop").Length, "Number of props");
             Assert.AreEqual(defaultGravity, Physics.gravity, "gravity");
-            Assert.AreEqual("0", GameObject.Find("Current catches").GetComponent<VRTK.VRTK_ObjectTooltip>().displayText, "Timer catch text");
-            Assert.AreEqual("0.0s", GameObject.Find("Current time").GetComponent<VRTK.VRTK_ObjectTooltip>().displayText, "Timer time text");
-            Assert.AreEqual(defaultRecord, GameObject.Find("Current record").GetComponent<VRTK.VRTK_ObjectTooltip>().displayText, "Timer record text");
-            Assert.AreEqual("3", GameObject.Find("Number of balls text").GetComponent<VRTK.VRTK_ObjectTooltip>().displayText, "Number of balls text");
-            Assert.AreEqual("Party mode", GameObject.Find("Game mode text").GetComponent<VRTK.VRTK_ObjectTooltip>().displayText, "Game mode text");
+            Assert.AreEqual("0", GameObject.Find("Current catches").GetComponent<VRTK_ObjectTooltip>().displayText, "Timer catch text");
+            Assert.AreEqual("0.0s", GameObject.Find("Current time").GetComponent<VRTK_ObjectTooltip>().displayText, "Timer time text");
+            Assert.AreEqual(defaultRecord, GameObject.Find("Current record").GetComponent<VRTK_ObjectTooltip>().displayText, "Timer record text");
+            Assert.AreEqual("3", GameObject.Find("Number of balls text").GetComponent<VRTK_ObjectTooltip>().displayText, "Number of balls text");
+            Assert.AreEqual("Party mode", GameObject.Find("Game mode text").GetComponent<VRTK_ObjectTooltip>().displayText, "Game mode text");
             Assert.AreEqual(3, GameObject.FindGameObjectsWithTag("FakeProp").Length, "Number of fake props");
             Assert.Less(GameObject.Find("Full game mode").transform.position.y, 0, "The full game section is hidden");
             Material greenPaint = GameObject.Find("Green paint").GetComponent<Renderer>().sharedMaterial;
@@ -59,7 +37,7 @@ namespace Tests
         [UnityTest]
         public IEnumerator If_they_launch_straight_away()
         {
-            yield return new TestUtils().LoadScene();
+            yield return TestUtils.LoadScene();
             GameEvents.current.Launch();
             Assert.AreEqual(3, GameObject.FindGameObjectsWithTag("Prop").Length, "Three props are launched");
 
@@ -79,7 +57,7 @@ namespace Tests
         [UnityTest]
         public IEnumerator Change_number_of_balls()
         {
-            yield return new TestUtils().LoadScene();
+            yield return TestUtils.LoadScene();
             GameEvents.current.NumberOfBallsChange(1);
             GameEvents.current.Launch();
             Assert.AreEqual(1, GameObject.FindGameObjectsWithTag("Prop").Length, "Three props are launched");
@@ -92,7 +70,7 @@ namespace Tests
         [UnityTest]
         public IEnumerator Painting()
         {
-            yield return new TestUtils().LoadScene();
+            yield return TestUtils.LoadScene();
             // Number of fake props
             GameEvents.current.NumberOfBallsChange(1);
             GameEvents.current.Launch();
@@ -120,7 +98,7 @@ namespace Tests
         [UnityTest]
         public IEnumerator After_juggling()
         {
-            yield return new TestUtils().LoadScene();
+            yield return TestUtils.LoadScene();
             GameEvents.current.NumberOfBallsChange(3);
             GameEvents.current.Launch();
             Assert.AreEqual(defaultRecord, GameObject.Find("Current record").GetComponent<VRTK_ObjectTooltip>().displayText, "Timer record text");
