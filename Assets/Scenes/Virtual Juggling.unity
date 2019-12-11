@@ -2116,7 +2116,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &280436258
 Transform:
   m_ObjectHideFlags: 0
@@ -7160,7 +7160,7 @@ GameObject:
   - component: {fileID: 1017978102}
   - component: {fileID: 1017978101}
   m_Layer: 0
-  m_Name: Tests
+  m_Name: Integration Tests
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -11905,7 +11905,6 @@ MonoBehaviour:
   detectedSiteSwapNameText: {fileID: 2010485639}
   detectedSiteSwapRecordText: {fileID: 642150759}
   detectedSiteSwapCatchesText: {fileID: 1769659976}
-  test: 0
 --- !u!1 &1664949512
 GameObject:
   m_ObjectHideFlags: 0
