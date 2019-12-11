@@ -28,18 +28,20 @@ public class SiteSwaps : MonoBehaviour
     private uint controllerIdOfPreviousCatch;
     private Dictionary<uint, int> ballHeldInHand = new Dictionary<uint, int>();
     public VRTK_ObjectTooltip siteSwapText;
-    public VRTK_ObjectTooltip detectedSiteSwaptext;
+    public VRTK_ObjectTooltip detectedSiteSwapNameText;
+    public VRTK_ObjectTooltip detectedSiteSwapRecordText;
+    public VRTK_ObjectTooltip detectedSiteSwapCatchesText;
     public bool test = false;
 
     private Dictionary<int, SiteSwap[]> registeredSiteSwapsMap = new Dictionary<int, SiteSwap[]>()
         {
-            { 1,  new SiteSwap[] { new SiteSwap("1") }},
-            { 2, new SiteSwap[] { new SiteSwap("31"),  new SiteSwap("40") } },
-            { 3, new SiteSwap[] { new SiteSwap("3"),  new SiteSwap("423"),  new SiteSwap("531"),  new SiteSwap("51") } },
-            { 4, new SiteSwap[] { new SiteSwap("4"),  new SiteSwap("53"),  new SiteSwap("534"),  new SiteSwap("71") } },
-            { 5, new SiteSwap[] { new SiteSwap("5"),  new SiteSwap("645"),  new SiteSwap("744"),  new SiteSwap("91") } },
-            { 6, new SiteSwap[] { new SiteSwap("6"),  new SiteSwap("75"),  new SiteSwap("9555") } },
-            { 7, new SiteSwap[] { new SiteSwap("7") } },
+            { 1, new SiteSwap[] { new SiteSwap("1"), new SiteSwap("20") }},
+            { 2, new SiteSwap[] { new SiteSwap("2"), new SiteSwap("31"), new SiteSwap("40"), new SiteSwap("501") } },
+            { 3, new SiteSwap[] { new SiteSwap("3"), new SiteSwap("423"), new SiteSwap("531"),  new SiteSwap("51") } }, // new SiteSwap("441"),
+            { 4, new SiteSwap[] { new SiteSwap("4"), new SiteSwap("53"), new SiteSwap("534"),  new SiteSwap("71"), new SiteSwap("7531") } },
+            { 5, new SiteSwap[] { new SiteSwap("5"), new SiteSwap("645"), new SiteSwap("91"), new SiteSwap("97531") } }, // new SiteSwap("744"),
+            { 6, new SiteSwap[] { new SiteSwap("6"), new SiteSwap("75"), new SiteSwap("9555") } },
+            { 7, new SiteSwap[] { new SiteSwap("7"), new SiteSwap("95") } },
             { 8, new SiteSwap[] { new SiteSwap("8") } },
             { 9, new SiteSwap[] { new SiteSwap("9") } },
             { 10, new SiteSwap[] { new SiteSwap("a") } },
@@ -72,23 +74,26 @@ public class SiteSwaps : MonoBehaviour
 
     private void Render()
     {
-        siteSwapText.UpdateText("..." + string.Join("", siteSwapList.ToArray().Skip(Math.Max(0, siteSwapList.Count() - 10)).Take(10)));
+        siteSwapText.UpdateText(string.Join("", siteSwapList.ToArray().Skip(Math.Max(0, siteSwapList.Count() - 10)).Take(10)));
 
         DetectSiteSwap(string.Join("", siteSwapList.ToArray()));
 
-        // TODO: DetectSiteSwap returns a string
-        // TODO: DetectSiteSwap takes a list
-
         SiteSwap[] registeredSiteSwaps = registeredSiteSwapsMap[numberOfBalls];
 
-        string detectedSiteSwaps = "";
+        string detectedSiteSwapsNames = "Siteswap" + Environment.NewLine + Environment.NewLine;
+        string detectedSiteSwapsRecords = "Record" + Environment.NewLine + Environment.NewLine;
+        string detectedSiteSwapsCatches = "Catches" + Environment.NewLine + Environment.NewLine;
 
         foreach (SiteSwap registeredSiteSwap in registeredSiteSwaps)
         {
-            detectedSiteSwaps += registeredSiteSwap.Name + " " + registeredSiteSwap.Record + " " + registeredSiteSwap.CurrentCatches + Environment.NewLine;
+            detectedSiteSwapsNames += registeredSiteSwap.Name + Environment.NewLine;
+            detectedSiteSwapsRecords += registeredSiteSwap.Record + Environment.NewLine;
+            detectedSiteSwapsCatches += registeredSiteSwap.CurrentCatches + Environment.NewLine;
         }
 
-        detectedSiteSwaptext.UpdateText(detectedSiteSwaps);
+        detectedSiteSwapNameText.UpdateText(detectedSiteSwapsNames);
+        detectedSiteSwapRecordText.UpdateText(detectedSiteSwapsRecords);
+        detectedSiteSwapCatchesText.UpdateText(detectedSiteSwapsCatches);
     }
 
     // GameEvents

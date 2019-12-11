@@ -7,14 +7,15 @@ public class SettingsSlider : MonoBehaviour
 
     public void OnChange(float value)
     {
-        if(value > 0.5F)
+        if (value > 0.5F)
         {
             fullGameMode.transform.position = new Vector3(0, 1, 0);
-            valueText.UpdateText("full game");
-        } else
+            valueText.UpdateText("Full game");
+        }
+        else
         {
             fullGameMode.transform.position = new Vector3(0, -2, 0);
-            valueText.UpdateText("party mode");
+            valueText.UpdateText("Party mode");
         }
     }
 }
