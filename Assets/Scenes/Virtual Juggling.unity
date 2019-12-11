@@ -151,7 +151,7 @@ GameObject:
   - component: {fileID: 3764869}
   - component: {fileID: 3764868}
   m_Layer: 0
-  m_Name: Paint (1)
+  m_Name: Red paint
   m_TagString: Paint
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

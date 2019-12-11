@@ -1,7 +1,8 @@
 {
     "name": "Editor",
     "references": [
-        "GUID:b46f0b8c5d8483647b3c8e6693ae956d"
+        "GUID:b46f0b8c5d8483647b3c8e6693ae956d",
+        "GUID:1073196d5141ebb4dad9a7bb0cbb547b"
     ],
     "optionalUnityReferences": [
         "TestAssemblies"

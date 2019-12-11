@@ -52,21 +52,14 @@ public class IntegrationTests : MonoBehaviour
         yield return null;
         // yield return new WaitForSeconds(1f);
 
-        TestInitialisation();
-        TestInitialProps();
-        TestChangingNumberOfBalls();
-        TestPainting();
         yield return StartCoroutine(TestTimer());
-
-        // Sliders
-        TestGameModeSlider();
-        TestGravitySlider();
-
+        
         yield return null;
     }
 
     private IEnumerator TestTimer()
     {
+        // TODO: Move to a edit mode unit test
         Info("Timer");
         GameEvents.current.NumberOfBallsChange(3);
         GameEvents.current.Launch();
@@ -93,88 +86,6 @@ public class IntegrationTests : MonoBehaviour
         Test("Record is not set if the number of catches is higher when a launch happens", "3 ball record: 17 catches", TimerRecordText.displayText.Substring(0, 25));
 
         yield return null;
-    }
-
-    private void TestInitialisation()
-    {
-        Info("At the start");
-        Test("No props are visible", 0, GameObject.FindGameObjectsWithTag("Prop").Length);
-        Test("Gravity is default", defaultGravity, Physics.gravity);
-        Test("Timer catch count is default", "0", TimerCatchText.displayText);
-        Test("Timer time count is default", "0.0s", TimerTimeText.displayText);
-        Test("Timer record count is default", defaultRecord, TimerRecordText.displayText);
-        Test("Number of balls display text is default", "3", numberOfBallsText.displayText);
-        Test("Game mode display text is default", "Party mode", gameModeText.displayText);
-        Test("The number of fake props is default", 3, GameObject.FindGameObjectsWithTag("FakeProp").Length);
-        Test("The full game section is hidden", -2, fullGameSection.transform.position.y);
-        Test("The paint brush bristles' material is default", defaultMaterial, paintBrushBristles.sharedMaterial);
-    }
-
-    private void TestInitialProps()
-    {
-        Info("Initial props");
-        GameEvents.current.Launch();
-        Test("Three props are launched", 3, GameObject.FindGameObjectsWithTag("Prop").Length);
-
-        foreach(GameObject prop in GameObject.FindGameObjectsWithTag("Prop"))
-        {
-            // .toString because of some unknown type error or float inaccuracy 
-            Test("All props have default scale", defaultBallScale.ToString(), prop.transform.localScale.ToString());
-            Test("All props have default drag", defaultDrag.ToString(), prop.GetComponent<Rigidbody>().drag.ToString());
-            Test("All props have default collider radius", defaultColliderRadius.ToString(), prop.GetComponent<SphereCollider>().radius.ToString());
-            Test("All props have default trail duration", 0.ToString(), prop.GetComponent<TrailRenderer>().time.ToString());
-            Test("All props have default material", defaultMaterial, prop.GetComponent<Renderer>().sharedMaterial);
-        }
-    }
-
-    private void TestChangingNumberOfBalls()
-    {
-        Info("Changing number of balls");
-        GameEvents.current.NumberOfBallsChange(3);
-        GameEvents.current.Launch();
-        Test("Three props are launched", 3, GameObject.FindGameObjectsWithTag("Prop").Length);
-        GameEvents.current.NumberOfBallsChange(4);
-        GameEvents.current.Launch();
-        Test("Three props are launched", 4, GameObject.FindGameObjectsWithTag("Prop").Length);
-    }
-
-    private void TestPainting()
-    {
-        Info("Painting");
-        GameEvents.current.NumberOfBallsChange(1);
-        GameEvents.current.Launch();
-        Test("The number of fake props matches the number of balls", 1, GameObject.FindGameObjectsWithTag("FakeProp").Length);
-        GameEvents.current.NumberOfBallsChange(3);
-        Test("Changing the number of balls changes the number of fake props instantly", 3, GameObject.FindGameObjectsWithTag("FakeProp").Length);
-        GameEvents.current.Launch();
-        GameEvents.current.Paint(1, redMaterial);
-        Test("The correct fake prop is painted", redMaterial, GameObject.FindGameObjectsWithTag("FakeProp")[1].GetComponent<Renderer>().sharedMaterial);
-        Test("The correct real prop is painted", redMaterial, GameObject.FindGameObjectsWithTag("Prop")[1].GetComponent<Renderer>().sharedMaterial);
-        Test("Other fake props are uneffected", defaultMaterial, GameObject.FindGameObjectsWithTag("FakeProp")[0].GetComponent<Renderer>().sharedMaterial);
-        Test("Other real props are uneffected", defaultMaterial, GameObject.FindGameObjectsWithTag("Prop")[0].GetComponent<Renderer>().sharedMaterial);
-        Test("The correct real prop's trail is painted", redMaterial.color, GameObject.FindGameObjectsWithTag("Prop")[1].GetComponent<TrailRenderer>().startColor);
-        Test("The correct real prop's trail is painted", redMaterial.color, GameObject.FindGameObjectsWithTag("Prop")[1].GetComponent<TrailRenderer>().endColor);
-    }
-
-    private void TestGameModeSlider()
-    {
-        Info("Game mode slider");
-        gameModeSlider.OnChange(1);
-        Test("If value is 1, the full game section is visible", 1, fullGameSection.transform.position.y);
-        Test("If value is 1, the text is 'Full Game'", "Full game", gameModeText.displayText);
-        gameModeSlider.OnChange(0);
-        Test("If value is 0, the full game section is hidden", -2, fullGameSection.transform.position.y);
-        Test("If value is 0, the text is 'Party mode'", "Party mode", gameModeText.displayText);
-    }
-
-    private void TestGravitySlider()
-    {
-        Info("Gravity slider");
-        var newGravity = 9.8f;
-        gravitySlider.OnChange(newGravity);
-        Test("GravitySlider should set the gravity", new Vector3(0, -newGravity, 0), Physics.gravity);
-        gravitySlider.OnChange(defaultGravityFloat);
-        Test("After the gravity test it is the default", defaultGravity, Physics.gravity);
     }
 
     //private void TestTimer()
