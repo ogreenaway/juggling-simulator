@@ -141,11 +141,15 @@ public class SiteSwaps : MonoBehaviour
 
     private void OnThrow(uint controllerId, int ballId)
     {
-        if (ballHeldInHand[controllerId] != ballId)
-        {
-            Debug.LogError("BUG: Somehow threw ball " + ballId + " from hand holding " + ballHeldInHand[controllerId]);
+        if(ballHeldInHand.TryGetValue(controllerId, out int heldBallId)) {
+            if (heldBallId == ballId)
+            {
+                ballHeldInHand.Remove(controllerId);
+            } else
+            {
+                Debug.LogError("BUG: Somehow threw ball " + ballId + " from hand holding " + ballHeldInHand[controllerId]);
+            }
         }
-        ballHeldInHand.Remove(controllerId);
     }
 
     private void OnNumberOfBallsChange(int n)
@@ -198,68 +202,14 @@ public class SiteSwaps : MonoBehaviour
 
         foreach(SiteSwap registeredSiteSwap in registeredSiteSwaps)
         {
-            registeredSiteSwap.CurrentCatches = CountCatches(registeredSiteSwap.Name, sequenceActuallyJuggled);
+            SiteSwapAnalyser siteSwapAnalyser = new SiteSwapAnalyser();
+            registeredSiteSwap.CurrentCatches = siteSwapAnalyser.CountCatches(registeredSiteSwap.Name, sequenceActuallyJuggled);
 
             if (registeredSiteSwap.CurrentCatches > registeredSiteSwap.Record)
             {
                 registeredSiteSwap.Record = registeredSiteSwap.CurrentCatches;
             }
         }
-    }
-
-    int CountCatches(string siteSwap, string sequenceActuallyJuggled)
-    {
-        if (Trimmed(sequenceActuallyJuggled).Length == 0) return 0;
-
-        string lastThrow = LastCharacter(Trimmed(sequenceActuallyJuggled));
-
-        if (siteSwap.Contains(lastThrow))
-        {
-            return WasPreviousThrowValid(
-                Trimmed(sequenceActuallyJuggled),
-                siteSwap,
-                siteSwap.IndexOf(lastThrow),
-                1
-            );
-        }
-        else
-        {
-            return 0;
-        }
-    }
-
-    int WasPreviousThrowValid(string sequenceActuallyJuggled, string siteSwap, int indexOfCurrentThrow, int count)
-    {
-        // We know the last sequence is valid, now look at previous throws
-        string newSequence = RemoveLastCharacter(sequenceActuallyJuggled);
-
-        // If no previous catches then it's invalid
-        if (newSequence.Length == 0)
-        {
-            return count;
-        }
-
-        if (LastCharacter(newSequence) == siteSwap[PreviousIndex(siteSwap, indexOfCurrentThrow)].ToString())
-        {
-            return WasPreviousThrowValid(
-                    newSequence,
-                    siteSwap,
-                    PreviousIndex(siteSwap, indexOfCurrentThrow),
-                    count + 1
-            );
-        }
-
-        return count;
-    }
-
-    string PreviousThrowInSiteSwap(string siteSwap, int indexOfCurrentThrow)
-    {
-        return indexOfCurrentThrow == 0 ? LastCharacter(siteSwap) : Previous(siteSwap, indexOfCurrentThrow);
-    }
-
-    int PreviousIndex(string siteSwap, int index)
-    {
-        return index == 0 ? siteSwap.Length - 1 : index - 1;
     }
 
     // Utils
@@ -272,25 +222,6 @@ public class SiteSwaps : MonoBehaviour
         return i.ToString();
     }
 
-    string LastCharacter(string s)
-    {
-        return s[s.Length - 1].ToString();
-    }
-
-    string Trimmed(string s)
-    {
-        return s.Split('_')[0];
-    }
-
-    string Previous(string s, int i)
-    {
-        return s[i - 1].ToString();
-    }
-
-    string RemoveLastCharacter(string s)
-    {
-        return s.Remove(s.Length - 1);
-    }
 
     // Testing
     // ===========================================
@@ -407,5 +338,84 @@ public class SiteSwaps : MonoBehaviour
         {
             Debug.LogError("TEST FAIL: Expected '" + expected + "' by received '" + result + "'");
         }
+    }
+}
+
+
+public class SiteSwapAnalyser
+{
+    public int CountCatches(string siteSwap, string sequenceActuallyJuggled)
+    {
+        if (Trimmed(sequenceActuallyJuggled).Length == 0) return 0;
+
+        string lastThrow = LastCharacter(Trimmed(sequenceActuallyJuggled));
+
+        if (siteSwap.Contains(lastThrow))
+        {
+            return WasPreviousThrowValid(
+                Trimmed(sequenceActuallyJuggled),
+                siteSwap,
+                siteSwap.IndexOf(lastThrow),
+                1
+            );
+        }
+        else
+        {
+            return 0;
+        }
+    }
+
+    int WasPreviousThrowValid(string sequenceActuallyJuggled, string siteSwap, int indexOfCurrentThrow, int count)
+    {
+        // We know the last sequence is valid, now look at previous throws
+        string newSequence = RemoveLastCharacter(sequenceActuallyJuggled);
+
+        // If no previous catches then it's invalid
+        if (newSequence.Length == 0)
+        {
+            return count;
+        }
+
+        if (LastCharacter(newSequence) == siteSwap[PreviousIndex(siteSwap, indexOfCurrentThrow)].ToString())
+        {
+            return WasPreviousThrowValid(
+                    newSequence,
+                    siteSwap,
+                    PreviousIndex(siteSwap, indexOfCurrentThrow),
+                    count + 1
+            );
+        }
+
+        return count;
+    }
+
+    string PreviousThrowInSiteSwap(string siteSwap, int indexOfCurrentThrow)
+    {
+        return indexOfCurrentThrow == 0 ? LastCharacter(siteSwap) : Previous(siteSwap, indexOfCurrentThrow);
+    }
+
+    int PreviousIndex(string siteSwap, int index)
+    {
+        return index == 0 ? siteSwap.Length - 1 : index - 1;
+    }
+
+    string LastCharacter(string s)
+    {
+        return s[s.Length - 1].ToString();
+    }
+
+    string Trimmed(string s)
+    {
+        return s.Split('_')[0];
+    }
+
+    string Previous(string s, int i)
+    {
+        return s[i - 1].ToString();
+    }
+
+    string RemoveLastCharacter(string s)
+    {
+        return s.Remove(s.Length - 1);
     }
 }

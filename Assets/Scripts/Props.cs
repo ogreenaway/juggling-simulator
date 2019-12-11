@@ -18,24 +18,24 @@ public class Props : MonoBehaviour
         }
 
         GameEvents.current.OnPaint += Paint;
-        GameEvents.current.OnThrow += OnThrow;
+        //GameEvents.current.OnThrow += OnThrow;
     }
 
     private void OnDestroy()
     {
         GameEvents.current.OnPaint -= Paint;
-        GameEvents.current.OnThrow -= OnThrow;
+        //GameEvents.current.OnThrow -= OnThrow;
 
     }
 
-    private void OnThrow(uint controllerId, int ballId)
-    {
-        // Fix order as VRTK appends them to the end of the list 
-        for (var i = 0; i < balls.Length; i++)
-        {
-            balls[i].transform.SetSiblingIndex(i);
-        }
-    }
+    //private void OnThrow(uint controllerId, int ballId)
+    //{
+    //    // Fix order as VRTK appends them to the end of the list 
+    //    for (var i = 0; i < balls.Length; i++)
+    //    {
+    //        balls[i].transform.SetSiblingIndex(i);
+    //    }
+    //}
 
     public void SetRadius(float radius)
     {
