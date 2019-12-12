@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class SiteSwapCreator
 {
-    public List<string> siteSwapList = new List<string>() { "_" };
+    public List<string> siteSwapList = new List<string>() {"_"};
 
     private int currentBeat = 0;
     private uint controllerIdOfPreviousCatch;
@@ -46,6 +46,7 @@ public class SiteSwapCreator
                 // Not much to do for a 0
                 SetSiteSwapList(currentBeat, "0");
                 currentBeat++;
+                siteSwapList.Add("_");
             }
         }
 
@@ -75,21 +76,17 @@ public class SiteSwapCreator
 
     private void SetSiteSwapList(int index, string value)
     {
-        // We are calculating using the catches so 531 would be calculated
-        // __1, _31, 531
-        if (siteSwapList.Count <= index)
+        try
         {
-            // In the example of 531 we need to add the "__" before the 1
-            // There might be a nicer way to do this in C#
-            for (int i = 0; i <= index - siteSwapList.Count; i++)
-            {
-                siteSwapList.Add("_");
-            }
-            // I'm not quite sure why there is an off-by-one error here
-            siteSwapList.Add("_");
+            siteSwapList[index] = value;
+        } catch
+        {
+            Debug.LogError("GetSiteSwap: " + GetSiteSwap());
+            Debug.LogError("index: " + index);
+            Debug.LogError("value: "+ value);
+            Debug.LogError("siteSwapList.Count: " + siteSwapList.Count);
+            throw new System.IndexOutOfRangeException();
         }
-        // Now it is safe to set the value
-        siteSwapList[index] = value;
     }
 
     void Catch(uint controllerId, int ballId)
@@ -103,6 +100,7 @@ public class SiteSwapCreator
 
         beatLastCaughtMap[ballId] = currentBeat;
         currentBeat++;
+        siteSwapList.Add("_");
     }
 
     private string IntToHex(int i)

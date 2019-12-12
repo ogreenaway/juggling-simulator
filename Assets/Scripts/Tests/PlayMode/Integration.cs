@@ -15,10 +15,15 @@ namespace Tests
         private readonly float defaultColliderRadius = 0.5F;
         private readonly string defaultRecord = "3 ball record: 0 catches 0.00s";
 
+        [UnitySetUp]
+        public IEnumerator SetUp()
+        {
+            yield return TestUtils.LoadScene();
+        }
+
         [UnityTest]
         public IEnumerator At_the_start_of_the_game()
         {
-            yield return TestUtils.LoadScene();
             Assert.AreEqual(0, GameObject.FindGameObjectsWithTag("Prop").Length, "Number of props");
             Assert.AreEqual(defaultGravity, Physics.gravity, "gravity");
             Assert.AreEqual("0", GameObject.Find("Current catches").GetComponent<VRTK_ObjectTooltip>().displayText, "Timer catch text");
@@ -37,7 +42,6 @@ namespace Tests
         [UnityTest]
         public IEnumerator If_they_launch_straight_away()
         {
-            yield return TestUtils.LoadScene();
             GameEvents.current.Launch();
             Assert.AreEqual(3, GameObject.FindGameObjectsWithTag("Prop").Length, "Three props are launched");
 
@@ -57,7 +61,6 @@ namespace Tests
         [UnityTest]
         public IEnumerator Change_number_of_balls()
         {
-            yield return TestUtils.LoadScene();
             GameEvents.current.NumberOfBallsChange(1);
             GameEvents.current.Launch();
             Assert.AreEqual(1, GameObject.FindGameObjectsWithTag("Prop").Length, "Three props are launched");
@@ -70,7 +73,6 @@ namespace Tests
         [UnityTest]
         public IEnumerator Painting()
         {
-            yield return TestUtils.LoadScene();
             // Number of fake props
             GameEvents.current.NumberOfBallsChange(1);
             GameEvents.current.Launch();
@@ -93,45 +95,6 @@ namespace Tests
             Assert.AreEqual(redPaint.color, GameObject.FindGameObjectsWithTag("Prop")[1].GetComponent<TrailRenderer>().endColor, "The correct real prop's trail's end color is painted");
 
             yield return null;
-        }
-
-        [UnityTest]
-        public IEnumerator After_juggling()
-        {
-            yield return TestUtils.LoadScene();
-            GameEvents.current.NumberOfBallsChange(3);
-            GameEvents.current.Launch();
-            Assert.AreEqual(defaultRecord, GameObject.Find("Current record").GetComponent<VRTK_ObjectTooltip>().displayText, "Timer record text");
-
-            Juggle();
-            yield return null;
-            Assert.AreEqual("5", GameObject.Find("Current catches").GetComponent<VRTK_ObjectTooltip>().displayText, "Catches are counted");
-            // TODO: See if this is a real bug
-            // Assert.AreEqual(defaultRecord, GameObject.Find("Current record").GetComponent<VRTK_ObjectTooltip>().displayText.Substring(0, 25), "Record count isn't set before end of run");
-
-            GameEvents.current.Drop();
-            Assert.AreEqual("3 ball record: 5 catches", GameObject.Find("Current record").GetComponent<VRTK_ObjectTooltip>().displayText.Substring(0, 24), "Record count is set");
-            
-            yield return null;
-        }
-
-        private void Juggle()
-        {
-            uint left = 1;
-            uint right = 2;
-            int green = 1;
-            int blue = 2;
-            int red = 3;
-
-            GameEvents.current.Catch(left, green);
-            GameEvents.current.Catch(right, blue);
-
-            GameEvents.current.Catch(left, red);
-            GameEvents.current.Catch(right, green);
-            GameEvents.current.Catch(left, blue);
-            GameEvents.current.Catch(right, red);
-            GameEvents.current.Catch(left, green);
-            GameEvents.current.Catch(right, blue);
         }
     }
 }

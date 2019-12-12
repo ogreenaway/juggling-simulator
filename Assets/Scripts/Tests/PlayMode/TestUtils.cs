@@ -8,15 +8,12 @@ namespace Tests
     {
         public static IEnumerator LoadScene()
         {
-            SceneManager.LoadScene("Virtual Juggling");
-            yield return new WaitForSeconds(0.1f);
-
-            //    AsyncOperation asyncLoadLevel = SceneManager.LoadSceneAsync("Virtual Juggling", LoadSceneMode.Single);
-            //    while (!asyncLoadLevel.isDone)
-            //    {
-            //        // yield return null;
-            //        yield return new WaitForSeconds(0.1f);
-            //    }
+            AsyncOperation asyncLoadLevel = SceneManager.LoadSceneAsync("Virtual Juggling", LoadSceneMode.Single);
+            while (!asyncLoadLevel.isDone)
+            {
+                yield return null;
+                yield return null;
+            }
         }
 
         public static void Juggle(string siteswap, int rounds)
