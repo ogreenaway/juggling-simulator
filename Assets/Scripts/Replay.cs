@@ -42,26 +42,29 @@ public class Replay : MonoBehaviour
     {
         mySequence = DOTween.Sequence();
         GameEvents.current.OnLaunch += OnLaunch;
+        GameEvents.current.OnDrop += StopRecording;
+
     }
 
     private void OnDestroy()
     {
         GameEvents.current.OnLaunch -= OnLaunch;
+        GameEvents.current.OnDrop -= StopRecording;
     }
 
     private void OnLaunch()
     {
         isRecording = !isRecording;
-
         if (isRecording)
         {
-            foreach(ReplayConnection replayConnection in ReplayConnections)
+            foreach (ReplayConnection replayConnection in ReplayConnections)
             {
                 replayConnection.snapshots = new List<Snapshot>();
                 StartCoroutine(RecordPositionAndRotation(replayConnection.real, replayConnection.snapshots));
                 // TODO: clean up coroutine?
             }
-        } else
+        }
+        else
         {
             mySequence.Kill();
             mySequence = DOTween.Sequence().SetLoops(-1, LoopType.Restart);
@@ -88,8 +91,9 @@ public class Replay : MonoBehaviour
     {
         DateTime initialTime = snapshots.ToArray()[0].timestamp;
         //DateTime previousTime = snapshots.ToArray()[0].timestamp;
+        gameObject.transform.position = snapshots.ToArray()[0].position;
 
-        foreach(Snapshot snapshot in snapshots)
+        foreach (Snapshot snapshot in snapshots)
         {
 
             //float duration = Convert.ToSingle((snapshot.timestamp - previousTime).TotalSeconds);
@@ -102,6 +106,20 @@ public class Replay : MonoBehaviour
             mySequence.Insert(insertTime, moveTween);
             mySequence.Insert(insertTime, rotateTween);
             //previousTime = snapshot.timestamp;
+        }
+    }
+
+    private void StopRecording()
+    {
+        if(isRecording)
+        {
+            isRecording = false;
+            mySequence.Kill();
+            mySequence = DOTween.Sequence().SetLoops(-1, LoopType.Restart);
+            foreach (ReplayConnection replayConnection in ReplayConnections)
+            {
+                Play(replayConnection.mock, replayConnection.snapshots);
+            }
         }
     }
 }

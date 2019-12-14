@@ -40,21 +40,17 @@ public class Launcher : MonoBehaviour
     private void Launch()
     {
         var rightHandPosition = rightHand.transform.position;
-        var balls = this.gameObject.GetComponent<Props>().balls;
+        var balls = gameObject.GetComponent<Props>().balls;
 
-        for (var i = 0; i < balls.Length; i++)
+        foreach(GameObject ball in balls)
         {
-            var horizontalOffset = i % 2 != 0 ? ballHorizontalOffset : 0;
-            balls[i].transform.position = rightHandPosition + new Vector3(horizontalOffset, (i + 1) * ballVerticalOffset, 0);
-            balls[i].GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
+            int i = ball.GetComponent<CustomId>().id;
 
-            if ( i < numberOfBalls)
-            {
-                balls[i].SetActive(true);
-            } else
-            {
-                balls[i].SetActive(false);
-            }
+            var horizontalOffset = i % 2 != 0 ? ballHorizontalOffset : 0;
+            var position= rightHandPosition + new Vector3(horizontalOffset, (i + 1) * ballVerticalOffset, 0);
+            ball.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
+            ball.GetComponent<TrailRenderer>().Clear();
+            ball.SetActive(i < numberOfBalls);
         }
     }
 }

@@ -18,24 +18,13 @@ public class Props : MonoBehaviour
         }
 
         GameEvents.current.OnPaint += Paint;
-        //GameEvents.current.OnThrow += OnThrow;
     }
 
     private void OnDestroy()
     {
         GameEvents.current.OnPaint -= Paint;
-        //GameEvents.current.OnThrow -= OnThrow;
 
     }
-
-    //private void OnThrow(uint controllerId, int ballId)
-    //{
-    //    // Fix order as VRTK appends them to the end of the list 
-    //    for (var i = 0; i < balls.Length; i++)
-    //    {
-    //        balls[i].transform.SetSiblingIndex(i);
-    //    }
-    //}
 
     public void SetRadius(float radius)
     {
@@ -76,10 +65,17 @@ public class Props : MonoBehaviour
         }
     }
 
-    private void Paint(int ballIndex, Material material)
+    private void Paint(int customId, Material material)
     {
-        balls[ballIndex].GetComponent<Renderer>().material = material;
-        balls[ballIndex].GetComponent<TrailRenderer>().startColor = material.color;
-        balls[ballIndex].GetComponent<TrailRenderer>().endColor = material.color;
+        foreach(GameObject ball in balls)
+        {
+            if(ball.GetComponent<CustomId>().id == customId)
+            {
+                ball.GetComponent<Renderer>().material = material;
+                ball.GetComponent<TrailRenderer>().startColor = material.color;
+                ball.GetComponent<TrailRenderer>().endColor = material.color;
+            }
+        }
+        
     }
 }

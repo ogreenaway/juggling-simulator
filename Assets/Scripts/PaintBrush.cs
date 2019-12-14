@@ -1,15 +1,13 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PaintBrush : MonoBehaviour
 {
-    public GameObject[] fakeJugglingBalls = new GameObject[0];
     public Renderer bristles;
+    private GameObject[] fakeProps;
 
     private void Start()
     {
-        fakeJugglingBalls = GameObject.FindGameObjectsWithTag("FakeProp");
+        fakeProps = GameObject.FindGameObjectsWithTag("FakeProp");
         GameEvents.current.OnNumberOfBallsChange += DisplayBalls;
         GameEvents.current.OnPaint += Paint;
     }
@@ -20,9 +18,15 @@ public class PaintBrush : MonoBehaviour
         GameEvents.current.OnPaint -= Paint;
     }
 
-    private void Paint(int ballIndex, Material material)
+    private void Paint(int customId, Material material)
     {
-        fakeJugglingBalls[ballIndex].GetComponent<Renderer>().material = material;
+        foreach(GameObject fakeProp in fakeProps)
+        {
+            if (fakeProp.GetComponent<CustomId>().id == customId)
+            {
+                fakeProp.GetComponent<Renderer>().material = material;
+            }
+        }        
     }
 
     private void OnTriggerEnter(Collider collider)
@@ -36,7 +40,7 @@ public class PaintBrush : MonoBehaviour
                 break;
             case "FakeProp":
             case "Prop":
-                GameEvents.current.Paint(collider.gameObject.transform.GetSiblingIndex(), bristles.material);
+                GameEvents.current.Paint(collider.gameObject.GetComponent<CustomId>().id, bristles.material);
                 break;
             default:                
                 if (colliderRenderer)
@@ -49,9 +53,9 @@ public class PaintBrush : MonoBehaviour
 
     private void DisplayBalls(int numberOfBalls)
     {
-        for (int i = 0; i < fakeJugglingBalls.Length; i++)
+        foreach(GameObject fakeProp in fakeProps)
         {
-            fakeJugglingBalls[i].SetActive(i < numberOfBalls);
+            fakeProp.SetActive(fakeProp.GetComponent<CustomId>().id < numberOfBalls);
         }
     }
 }
