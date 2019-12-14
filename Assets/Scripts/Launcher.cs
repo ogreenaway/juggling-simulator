@@ -47,7 +47,7 @@ public class Launcher : MonoBehaviour
             int i = ball.GetComponent<CustomId>().id;
 
             var horizontalOffset = i % 2 != 0 ? ballHorizontalOffset : 0;
-            var position= rightHandPosition + new Vector3(horizontalOffset, (i + 1) * ballVerticalOffset, 0);
+            ball.transform.position= rightHandPosition + new Vector3(horizontalOffset, (i + 1) * ballVerticalOffset, 0);
             ball.GetComponent<Rigidbody>().velocity = new Vector3(0, 0, 0);
             ball.GetComponent<TrailRenderer>().Clear();
             ball.SetActive(i < numberOfBalls);
