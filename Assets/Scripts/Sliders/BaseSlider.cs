@@ -5,7 +5,7 @@ using VRTK.Controllables;
 [System.Serializable]
 public class UnityEventWithFloat : UnityEvent<float> { }
 
-public class Slider : MonoBehaviour
+public class BaseSlider : MonoBehaviour
 {
     public UnityEventWithFloat onChange;
     public VRTK_BaseControllable controllable;
