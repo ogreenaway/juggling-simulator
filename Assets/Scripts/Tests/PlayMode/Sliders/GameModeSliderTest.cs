@@ -12,6 +12,7 @@ namespace Tests
         public IEnumerator Has_correct_default_value_and_can_be_updated()
         {
             yield return TestUtils.LoadScene();
+            yield return null; // Sometimes slow to load
             VRTK_ObjectTooltip gameModeSliderText = GameObject.Find("Game mode text").GetComponent<VRTK_ObjectTooltip>();
             GameModeSlider gameModeSlider = Object.FindObjectOfType<GameModeSlider>();
             GameObject fullGameModeSection = GameObject.Find("Full game mode");
@@ -26,8 +27,6 @@ namespace Tests
             gameModeSlider.OnChange(0);
             Assert.Less(fullGameModeSection.transform.position.y, 0, "If value is 0, the full game section is hidden");
             Assert.AreEqual("Party mode", gameModeSliderText.displayText, "If value is 0, the text is 'Party mode'");
-
-            yield return null;
         }
     }
 }

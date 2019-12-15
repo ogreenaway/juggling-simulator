@@ -73,7 +73,10 @@ public class Props : MonoBehaviour
             {
                 ball.GetComponent<Renderer>().material = material;
                 ball.GetComponent<TrailRenderer>().startColor = material.color;
-                ball.GetComponent<TrailRenderer>().endColor = material.color;
+
+                var transparentColor = material.color;
+                transparentColor.a = 0;
+                ball.GetComponent<TrailRenderer>().endColor = transparentColor;
             }
         }
         
