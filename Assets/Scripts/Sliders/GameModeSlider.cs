@@ -1,8 +1,9 @@
 ﻿using UnityEngine;
+using VRTK;
 
-public class SettingsSlider : MonoBehaviour
+public class GameModeSlider : MonoBehaviour
 {
-    public VRTK.VRTK_ObjectTooltip valueText;
+    public VRTK_ObjectTooltip valueText;
     public GameObject fullGameMode;
 
     public void OnChange(float value)

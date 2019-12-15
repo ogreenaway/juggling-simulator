@@ -11,6 +11,10 @@ namespace Tests
             AsyncOperation asyncLoadLevel = SceneManager.LoadSceneAsync("Virtual Juggling", LoadSceneMode.Single);
             while (!asyncLoadLevel.isDone)
             {
+                // Mainly wait for the tooltips / sliders to update
+                yield return null;
+                yield return null;
+                yield return null;
                 yield return null;
                 yield return null;
             }
