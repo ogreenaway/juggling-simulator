@@ -11,6 +11,7 @@ namespace Tests
         [UnityTest]
         public IEnumerator Initial_props_and_example_prop_have_default_value()
         {
+            float defaultScale = 0.2f;
             yield return TestUtils.LoadScene();
             GameEvents.current.Launch();
 
@@ -19,19 +20,28 @@ namespace Tests
 
             foreach (GameObject prop in props)
             {
-                Assert.AreEqual(new Vector3(0.2F, 0.2F, 0.2F).ToString(), prop.transform.localScale.ToString(), "All props have default scale");
+                var scale = prop.transform.localScale;
+                Assert.That(Mathf.Approximately(defaultScale, scale.x), "All props have "+defaultScale+" scale in x but received " + scale.x);
+                Assert.That(Mathf.Approximately(defaultScale, scale.y), "All props have " + defaultScale + " scale in y but received " + scale.y);
+                Assert.That(Mathf.Approximately(defaultScale, scale.z), "All props have " + defaultScale + " scale in z but received " + scale.z);
+                Assert.That(Mathf.Approximately(defaultScale, prop.GetComponent<TrailRenderer>().startWidth), "Trail width");
             }
 
-            Assert.AreEqual(new Vector3(0.2F, 0.2F, 0.2F).ToString(), GameObject.Find("Example Ball Size").transform.localScale.ToString(), "Example prop has default scale");
+            var examplePropScale = GameObject.Find("Example Ball Size").transform.localScale;
+            Assert.That(Mathf.Approximately(defaultScale, examplePropScale.x), "All props have " + defaultScale + " scale in x but received " + examplePropScale.x);
+            Assert.That(Mathf.Approximately(defaultScale, examplePropScale.y), "All props have " + defaultScale + " scale in y but received " + examplePropScale.y);
+            Assert.That(Mathf.Approximately(defaultScale, examplePropScale.z), "All props have " + defaultScale + " scale in z but received " + examplePropScale.z);
+
             yield return null;
         }
 
         [UnityTest]
         public IEnumerator Sets_correct_value_for_all_props_and_example_prop()
         {
+            float newScale = 3f;
             yield return TestUtils.LoadScene();
 
-            Object.FindObjectOfType<Props>().SetRadius(3f);
+            Object.FindObjectOfType<Props>().SetRadius(newScale);
             GameEvents.current.NumberOfBallsChange(15);
             GameEvents.current.Launch();
 
@@ -40,10 +50,17 @@ namespace Tests
 
             foreach (GameObject prop in props)
             {
-                Assert.AreEqual(new Vector3(3f, 3f, 3f), prop.transform.localScale, "All props have set scale");
+                var scale = prop.transform.localScale;
+                Assert.That(Mathf.Approximately(newScale, scale.x), "All props have " + newScale + " scale in x but received " + scale.x);
+                Assert.That(Mathf.Approximately(newScale, scale.y), "All props have " + newScale + " scale in y but received " + scale.y);
+                Assert.That(Mathf.Approximately(newScale, scale.z), "All props have " + newScale + " scale in z but received " + scale.z);
+                Assert.That(Mathf.Approximately(newScale, prop.GetComponent<TrailRenderer>().startWidth), "Trail width");
             }
 
-            Assert.AreEqual(new Vector3(3f, 3f, 3f).ToString(), GameObject.Find("Example Ball Size").transform.localScale.ToString(), "Example prop has set scale");
+            var examplePropScale = GameObject.Find("Example Ball Size").transform.localScale;
+            Assert.That(Mathf.Approximately(newScale, examplePropScale.x), "All props have " + newScale + " scale in x but received " + examplePropScale.x);
+            Assert.That(Mathf.Approximately(newScale, examplePropScale.y), "All props have " + newScale + " scale in y but received " + examplePropScale.y);
+            Assert.That(Mathf.Approximately(newScale, examplePropScale.z), "All props have " + newScale + " scale in z but received " + examplePropScale.z);
 
             yield return null;
         }

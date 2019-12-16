@@ -33,6 +33,7 @@ public class Props : MonoBehaviour
         foreach (GameObject ball in balls)
         {
             ball.transform.localScale = scale;
+            ball.GetComponent<TrailRenderer>().startWidth = radius;
         }
 
         exampleBallSize.transform.localScale = scale;

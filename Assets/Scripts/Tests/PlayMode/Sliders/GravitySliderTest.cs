@@ -9,11 +9,16 @@ namespace Tests
     public class GravitySliderTest
     {
         [UnityTest]
-        public IEnumerator Has_correct_default_value_and_can_be_updated()
+        public IEnumerator Has_correct_default_value()
         {
             yield return TestUtils.LoadScene();
-            Assert.AreEqual(new Vector3(0, -2.4f, 0), Physics.gravity, "Gravity is the correct default value");
+            Assert.AreEqual(new Vector3(0, -1.2f, 0), Physics.gravity, "Gravity is the correct default value");
+        }
 
+        [UnityTest]
+        public IEnumerator Can_be_updated()
+        {
+            yield return TestUtils.LoadScene();
             GravitySlider gravitySlider = GameObject.FindObjectOfType<GravitySlider>();
             float newGravity = 9.8f;
 

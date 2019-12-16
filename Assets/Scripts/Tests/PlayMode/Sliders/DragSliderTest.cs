@@ -18,7 +18,7 @@ namespace Tests
             Assert.Greater(props.Length, 0);
             foreach (GameObject prop in props)
             {
-                Assert.That(Mathf.Approximately(3.3f, prop.GetComponent<Rigidbody>().drag), "All props have default drag");
+                Assert.That(Mathf.Approximately(4f, prop.GetComponent<Rigidbody>().drag), "All props have default drag");
             }
 
             yield return null;

@@ -4,6 +4,17 @@ using NUnit.Framework;
 using UnityEngine;
 using UnityEngine.TestTools;
 
+/*
+ * launch, juggle, (counts catches)
+ * launch, juggle, launch, (sets record)
+ * launch, juggle less than current record, launch, (!sets record)
+ * launch, juggle, drop, (sets record)
+ * launch, juggle less than current record, drop, (!sets record)
+ * #balls, (new records shown)
+ * launch, juggle, change #balls, (sets record)
+ * launch, juggle less than current record, change #balls, (!sets record)
+ */
+
 namespace Tests
 {
     public class SiteSwapAnalyserTest
